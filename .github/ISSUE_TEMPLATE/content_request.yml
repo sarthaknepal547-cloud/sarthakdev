@@ -1,0 +1,63 @@
+name: ✍️ Content request
+description: Add or change a blog post, gallery photo, hobby, or section text
+title: "[Content]: "
+labels: ["site-content"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for anything about what the site *says or shows* — new writing, new photos,
+        rewording a section, updating the About text.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which part of the site?
+      options:
+        - Home / hero
+        - About Me
+        - Blog post
+        - Gallery photo
+        - Hobbies & Interests
+        - Contact section
+        - Footer / navigation
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: action
+    attributes:
+      label: What kind of change?
+      options:
+        - Add something new
+        - Edit existing text or media
+        - Remove something
+        - Fix a typo
+    validations:
+      required: true
+
+  - type: textarea
+    id: details
+    attributes:
+      label: Describe the change
+      description: Paste the exact text you want, or describe the photo/section.
+      placeholder: |
+        Example: Add a new blog post titled "A Weekend in Nagarkot" with this text...
+    validations:
+      required: true
+
+  - type: textarea
+    id: assets
+    attributes:
+      label: Images or files
+      description: Drag and drop any photos or files this needs.
+      placeholder: "Paste or drag files here."
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: This is content for my own site and I have the rights to use any images
+          required: true

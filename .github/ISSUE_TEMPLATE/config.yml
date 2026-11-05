@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 💬 Ask a question or share an idea
+    url: https://github.com/sarthaknepal547-cloud/sarthakdev/discussions
+    about: For open-ended questions, ideas, and general chat about the site.
+  - name: 🌐 Visit the live site
+    url: https://sarthaknepal547-cloud.github.io/sarthakdev/
+    about: See the current version of the site in the browser.

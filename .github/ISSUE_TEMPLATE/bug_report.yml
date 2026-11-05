@@ -1,0 +1,78 @@
+name: 🐛 Bug report
+description: Something on the site is broken, looks wrong, or doesn't work as expected
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a problem. The clearer the details, the faster it gets fixed.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What's wrong?
+      description: Describe the problem in plain language.
+      placeholder: "Example: The gallery lightbox shows a broken image icon when I click the second photo."
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What should happen instead?
+      placeholder: "Example: The photo should open full-size in the lightbox."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: How can someone else see the same problem?
+      placeholder: |
+        1. Go to the Gallery section
+        2. Click the photo of the mountains
+        3. See the broken image icon
+    validations:
+      required: true
+
+  - type: dropdown
+    id: devices
+    attributes:
+      label: Where does it happen?
+      description: Pick all that apply.
+      multiple: true
+      options:
+        - Desktop — Chrome
+        - Desktop — Firefox
+        - Desktop — Safari
+        - Desktop — Edge
+        - Mobile — Android
+        - Mobile — iPhone
+        - Tablet
+        - Don't know
+    validations:
+      required: true
+
+  - type: input
+    id: page-url
+    attributes:
+      label: Page URL or section
+      description: The live URL or the section name (e.g. "#gallery").
+      placeholder: "https://sarthaknepal547-cloud.github.io/sarthakdev/#gallery"
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Drag and drop images here if it's a visual problem.
+      placeholder: "Paste or drag images here."
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and this isn't a duplicate
+          required: true
