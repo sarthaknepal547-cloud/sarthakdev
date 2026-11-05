@@ -1,0 +1,49 @@
+# ---- Operating system junk ----
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ---- Editors and IDEs ----
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+
+# ---- Logs ----
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ---- Local environment and secrets ----
+.env
+.env.*
+!.env.example
+*.pem
+
+# ---- Dependency folders (if tooling is ever added) ----
+node_modules/
+vendor/
+
+# ---- Build output (the site itself is plain static files) ----
+dist/
+build/
+.next/
+out/
+*.local
+
+# ---- Local testing artifacts ----
+.sass-cache/
+.cache/
+coverage/
+*.tmp
