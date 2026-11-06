@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Editor — Sarthak Dev Nepal</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%230E0D12'/%3E%3Ctext x='50' y='72' font-family='Georgia,serif' font-size='64' fill='%23E8622C' text-anchor='middle'%3EE%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0B0A0E; --surface: #15141B; --surface-2: #1D1C25;
+  --line: rgba(242,239,233,.11); --line-2: rgba(242,239,233,.2);
+  --text: #F2EFE9; --muted: #9C97A8; --accent: #E8622C; --gold: #F2B33D;
+  --ok: #3FB950; --err: #F85149;
+  --font: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: var(--font); background: var(--bg); color: var(--text); font-size: 14px; }
+
+/* ---------- login ---------- */
+.gate { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: var(--bg); padding: 1.5rem; }
+.gate__box { width: 100%; max-width: 440px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 2rem; }
+.gate h1 { font-size: 1.3rem; margin: 0 0 .4rem; font-weight: 500; }
+.gate p { color: var(--muted); font-size: .88rem; line-height: 1.6; margin: 0 0 1.2rem; }
+.gate a { color: var(--accent); }
+.gate input { width: 100%; padding: .8rem .9rem; border-radius: 10px; background: var(--bg); border: 1px solid var(--line-2); color: var(--text); font-family: inherit; font-size: .9rem; margin-bottom: .7rem; }
+.gate input:focus { outline: none; border-color: var(--accent); }
+.gate__err { color: var(--err); font-size: .82rem; min-height: 1.2em; margin: 0 0 .6rem; }
+.gate details { margin-top: 1.2rem; color: var(--muted); font-size: .82rem; line-height: 1.6; }
+.gate summary { cursor: pointer; color: var(--text); }
+.gate ol { padding-left: 1.1rem; margin: .6rem 0 0; }
+
+/* ---------- shell ---------- */
+.bar { position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: .6rem; padding: .7rem 1rem; background: rgba(11,10,14,.9); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+.bar__brand { font-weight: 500; margin-right: auto; display: flex; align-items: center; gap: .5rem; }
+.bar__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.bar__dot.ok { background: var(--ok); }
+.bar__dot.err { background: var(--err); }
+.bar__status { font-size: .8rem; color: var(--muted); }
+.btn { border: 1px solid var(--line-2); background: transparent; color: var(--text); padding: .5rem .9rem; border-radius: 9px; cursor: pointer; font-size: .83rem; font-family: inherit; transition: all .2s; }
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn--primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 500; }
+.btn--primary:hover { background: #f0703c; color: #fff; }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.btn--sm { padding: .3rem .6rem; font-size: .75rem; }
+.btn--danger:hover { border-color: var(--err); color: var(--err); }
+
+.layout { display: grid; grid-template-columns: minmax(360px, 44%) 1fr; height: calc(100vh - 54px); }
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; height: auto; } .preview { display: none; } }
+.panel { overflow-y: auto; border-right: 1px solid var(--line); padding-bottom: 5rem; }
+.preview { border: 0; width: 100%; height: 100%; background: #0E0D12; }
+.iframe-wrap { height: 100%; overflow: hidden; }
+
+/* ---------- groups ---------- */
+.group { border-bottom: 1px solid var(--line); }
+.group__head { display: flex; align-items: center; gap: .5rem; width: 100%; padding: .95rem 1.1rem; background: none; border: 0; color: var(--text); font: inherit; font-weight: 500; cursor: pointer; text-align: left; }
+.group__head:hover { color: var(--accent); }
+.group__caret { color: var(--muted); transition: transform .2s; display: inline-block; }
+.group.open .group__caret { transform: rotate(90deg); }
+.group__body { display: none; padding: 0 1.1rem 1.2rem; }
+.group.open .group__body { display: block; }
+.hint { color: var(--muted); font-size: .78rem; line-height: 1.5; margin: 0 0 .9rem; }
+
+.field { margin-bottom: .8rem; }
+.field label { display: block; font-size: .7rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: .3rem; }
+.field input, .field textarea, .field select {
+  width: 100%; padding: .6rem .75rem; border-radius: 9px;
+  background: var(--bg); border: 1px solid var(--line-2); color: var(--text);
+  font-family: inherit; font-size: .87rem; line-height: 1.5;
+}
+.field textarea { resize: vertical; min-height: 76px; }
+.field input:focus, .field textarea:focus, .field select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(232,98,44,.14); }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+
+.item { border: 1px solid var(--line); border-radius: 12px; padding: .8rem; margin-bottom: .7rem; background: var(--surface-2); }
+.item__head { display: flex; align-items: center; gap: .4rem; margin-bottom: .7rem; }
+.item__title { font-size: .8rem; color: var(--muted); margin-right: auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.add { width: 100%; border: 1px dashed var(--line-2); background: none; color: var(--muted); padding: .6rem; border-radius: 10px; cursor: pointer; font: inherit; font-size: .82rem; }
+.add:hover { border-color: var(--accent); color: var(--accent); }
+
+.thumb { width: 100%; aspect-ratio: 16/10; object-fit: cover; border-radius: 8px; background: var(--surface); display: block; margin-bottom: .5rem; border: 1px solid var(--line); }
+.thumb--empty { display: grid; place-items: center; color: var(--muted); font-size: .78rem; border: 1px dashed var(--line-2); }
+.upload { display: inline-flex; align-items: center; gap: .4rem; font-size: .78rem; color: var(--accent); cursor: pointer; }
+.upload input { display: none; }
+
+.toast { position: fixed; left: 50%; bottom: 1.5rem; transform: translate(-50%, 20px); background: var(--surface); border: 1px solid var(--line-2); color: var(--text); padding: .7rem 1.1rem; border-radius: 10px; font-size: .85rem; opacity: 0; pointer-events: none; transition: all .3s; z-index: 200; box-shadow: 0 12px 40px rgba(0,0,0,.5); max-width: 90vw; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+.toast.err { border-color: var(--err); }
+.toast.ok { border-color: var(--ok); }
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<div class="gate" id="gate">
+  <div class="gate__box">
+    <h1>Owner sign-in</h1>
+    <p>This page lets you edit your website. It does nothing without your own GitHub key — visitors see a blank login and nothing else.</p>
+    <input type="password" id="tokenInput" placeholder="Paste your GitHub token (github_pat_…)" autocomplete="off" spellcheck="false">
+    <p class="gate__err" id="gateErr"></p>
+    <button class="btn btn--primary" id="loginBtn" style="width:100%">Unlock editor</button>
+    <details>
+      <summary>How to get a key (one time, 2 minutes)</summary>
+      <ol>
+        <li>GitHub → Settings → Developer settings → <strong>Personal access tokens → Fine-grained tokens</strong></li>
+        <li><strong>Generate new token</strong></li>
+        <li>Repository access: <strong>Only select repositories</strong> → <code>sarthakdev</code></li>
+        <li>Permissions → Repository permissions → <strong>Contents: Read and write</strong></li>
+        <li>Generate, copy it, paste it above</li>
+      </ol>
+      <p style="margin-top:.7rem">The key is stored only in this browser. Revoke it any time on GitHub to cut off access instantly.</p>
+    </details>
+  </div>
+</div>
+
+<!-- ============ SHELL ============ -->
+<header class="bar">
+  <div class="bar__brand"><span class="bar__dot" id="dot"></span> Website editor</div>
+  <span class="bar__status" id="status">Ready</span>
+  <button class="btn" id="reloadBtn">Reload</button>
+  <button class="btn" id="logoutBtn">Sign out</button>
+  <button class="btn btn--primary" id="publishBtn">Publish</button>
+</header>
+
+<div class="layout">
+  <aside class="panel" id="panel"></aside>
+  <div class="iframe-wrap"><iframe class="preview" id="preview" src="index.html" title="Live preview"></iframe></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  var OWNER = "sarthaknepal547-cloud";
+  var REPO = "sarthakdev";
+  var BRANCH = "main";
+  var TOKEN_KEY = "sdn-gh-token";
+  var API = "https://api.github.com/repos/" + OWNER + "/" + REPO;
+
+  var model = null;
+  var sha = null;
+  var busy = false;
+  var previewReady = false;
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------------- helpers ---------------- */
+  function toast(msg, kind) {
+    var t = $("toast");
+    t.textContent = msg;
+    t.className = "toast show " + (kind || "");
+    clearTimeout(t._timer);
+    t._timer = setTimeout(function () { t.className = "toast " + (kind || ""); }, 4200);
+  }
+  function setStatus(text, kind) {
+    $("status").textContent = text;
+    $("dot").className = "bar__dot" + (kind ? " " + kind : "");
+  }
+  function token() { try { return localStorage.getItem(TOKEN_KEY); } catch (e) { return null; } }
+
+  function getPath(obj, path) {
+    return path.split(".").reduce(function (o, k) { return o == null ? undefined : o[k]; }, obj);
+  }
+  function setPath(obj, path, value) {
+    var keys = path.split(".");
+    var last = keys.pop();
+    var target = keys.reduce(function (o, k) {
+      if (o[k] == null || typeof o[k] !== "object") o[k] = {};
+      return o[k];
+    }, obj);
+    target[last] = value;
+  }
+
+  function b64encodeUtf8(str) {
+    var bytes = new TextEncoder().encode(str);
+    var bin = "";
+    for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    return btoa(bin);
+  }
+
+  function b64decodeUtf8(b64) {
+    var bin = atob(b64.replace(/\n/g, ""));
+    var bytes = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new TextDecoder().decode(bytes);
+  }
+
+  function apiRequest(path, method, body) {
+    return fetch(API + path, {
+      method: method || "GET",
+      headers: {
+        "Authorization": "Bearer " + token(),
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28"
+      },
+      body: body ? JSON.stringify(body) : undefined
+    }).then(function (r) {
+      return r.text().then(function (text) {
+        var data = {};
+        try { data = JSON.parse(text); } catch (e) {}
+        if (!r.ok) {
+          var msg = (data && data.message) || ("HTTP " + r.status);
+          if (r.status === 401) msg = "Key rejected — check it was copied fully and hasn't expired.";
+          if (r.status === 403) msg = "Key lacks permission. It needs Contents: Read and write on this repo.";
+          if (r.status === 404) msg = "Not found — does the key have access to sarthakdev?";
+          throw new Error(msg);
+        }
+        return data;
+      });
+    });
+  }
+
+  /* ---------------- preview ---------------- */
+  function pushPreview() {
+    if (!previewReady || !model) return;
+    try {
+      $("preview").contentWindow.postMessage({ type: "sdn-draft", content: model }, "*");
+    } catch (e) {}
+  }
+  $("preview").addEventListener("load", function () {
+    previewReady = true;
+    setTimeout(pushPreview, 120);
+  });
+
+  var pending = null;
+  function changed() {
+    clearTimeout(pending);
+    pending = setTimeout(pushPreview, 260);
+  }
+
+  /* ---------------- field builders ---------------- */
+  function field(label, path, opts) {
+    opts = opts || {};
+    var value = getPath(model, path);
+    var el;
+    var wrap = document.createElement("div");
+    wrap.className = "field";
+    var lab = document.createElement("label");
+    lab.textContent = label;
+    wrap.appendChild(lab);
+
+    if (opts.multiline) {
+      el = document.createElement("textarea");
+      el.value = value == null ? "" : String(value);
+    } else {
+      el = document.createElement("input");
+      el.type = "text";
+      el.value = value == null ? "" : String(value);
+    }
+    if (opts.placeholder) el.placeholder = opts.placeholder;
+    el.addEventListener("input", function () {
+      setPath(model, path, el.value);
+      changed();
+    });
+    wrap.appendChild(el);
+    return wrap;
+  }
+
+  function group(title, open) {
+    var g = document.createElement("div");
+    g.className = "group" + (open ? " open" : "");
+    var head = document.createElement("button");
+    head.type = "button";
+    head.className = "group__head";
+    head.innerHTML = '<span class="group__caret">›</span><span></span>';
+    head.lastChild.textContent = title;
+    var body = document.createElement("div");
+    body.className = "group__body";
+    head.addEventListener("click", function () { g.classList.toggle("open"); });
+    g.appendChild(head);
+    g.appendChild(body);
+    return { el: g, body: body };
+  }
+
+  function hint(text, parent) {
+    var p = document.createElement("p");
+    p.className = "hint";
+    p.textContent = text;
+    parent.appendChild(p);
+  }
+
+  /* ---------------- image handling ---------------- */
+  function compressImage(file, maxW, quality) {
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onload = function () {
+        var img = new Image();
+        img.onload = function () {
+          var scale = Math.min(1, maxW / img.width);
+          var canvas = document.createElement("canvas");
+          canvas.width = Math.round(img.width * scale);
+          canvas.height = Math.round(img.height * scale);
+          var ctx = canvas.getContext("2d");
+          ctx.imageSmoothingQuality = "high";
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          var isPng = /image\/png|image\/gif/i.test(file.type);
+          resolve(canvas.toDataURL(isPng ? "image/jpeg" : "image/webp", quality));
+        };
+        img.onerror = reject;
+        img.src = reader.result;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function imagePicker(label, path, aspect) {
+    var wrap = document.createElement("div");
+    wrap.className = "field";
+    var lab = document.createElement("label");
+    lab.textContent = label;
+    wrap.appendChild(lab);
+
+    var img = document.createElement("img");
+    img.className = "thumb";
+    if (aspect) img.style.aspectRatio = aspect;
+    var current = getPath(model, path);
+    if (current) { img.src = current; }
+    else { img.classList.add("thumb--empty"); img.alt = "No image yet"; }
+    wrap.appendChild(img);
+
+    var row = document.createElement("div");
+    row.className = "upload";
+
+    var pick = document.createElement("label");
+    pick.className = "upload";
+    pick.innerHTML = '<span>＋ Upload image</span>';
+    var input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    pick.appendChild(input);
+
+    var clear = document.createElement("button");
+    clear.type = "button";
+    clear.className = "btn btn--sm btn--danger";
+    clear.textContent = "Remove";
+    clear.style.marginLeft = "auto";
+
+    input.addEventListener("change", function () {
+      var f = input.files && input.files[0];
+      if (!f) return;
+      if (f.size > 25 * 1024 * 1024) { toast("That file is over 25 MB — please use a smaller one.", "err"); return; }
+      setStatus("Compressing…");
+      compressImage(f, 1600, 0.82).then(function (dataUrl) {
+        img.src = dataUrl;
+        img.classList.remove("thumb--empty");
+        setPath(model, path, dataUrl);
+        changed();
+        setStatus("Ready");
+        toast("Image ready. Press Publish to make it live.", "ok");
+      }).catch(function () { toast("Could not read that image.", "err"); });
+    });
+
+    clear.addEventListener("click", function () {
+      setPath(model, path, "");
+      img.removeAttribute("src");
+      img.classList.add("thumb--empty");
+      changed();
+    });
+
+    row.appendChild(pick);
+    row.appendChild(clear);
+    wrap.appendChild(row);
+    return wrap;
+  }
+
+  /* ---------------- list editor ---------------- */
+  function listEditor(parent, arrayPath, itemLabel, buildFields, blank) {
+    var arr = getPath(model, arrayPath);
+    if (!Array.isArray(arr)) { arr = []; setPath(model, arrayPath, arr); }
+
+    arr.forEach(function (item, index) {
+      var box = document.createElement("div");
+      box.className = "item";
+
+      var head = document.createElement("div");
+      head.className = "item__head";
+      var title = document.createElement("span");
+      title.className = "item__title";
+      title.textContent = (index + 1) + ". " + (item[itemLabel] || "Untitled");
+
+      var up = document.createElement("button");
+      up.type = "button"; up.className = "btn btn--sm"; up.textContent = "↑";
+      up.addEventListener("click", function () {
+        if (index === 0) return;
+        arr.splice(index - 1, 0, arr.splice(index, 1)[0]);
+        rerender(); changed();
+      });
+
+      var del = document.createElement("button");
+      del.type = "button"; del.className = "btn btn--sm btn--danger"; del.textContent = "✕";
+      del.addEventListener("click", function () {
+        if (!confirm("Delete this item?")) return;
+        arr.splice(index, 1);
+        rerender(); changed();
+      });
+
+      head.appendChild(title);
+      head.appendChild(up);
+      head.appendChild(del);
+      box.appendChild(head);
+
+      buildFields(box, item, arr, index);
+      parent.appendChild(box);
+    });
+
+    var add = document.createElement("button");
+    add.type = "button";
+    add.className = "add";
+    add.textContent = "＋ Add " + itemLabel;
+    add.addEventListener("click", function () {
+      arr.push(JSON.parse(JSON.stringify(blank)));
+      rerender(); changed();
+    });
+    parent.appendChild(add);
+  }
+
+  /* ---------------- render panel ---------------- */
+  function rerender() {
+    var panel = $("panel");
+    panel.innerHTML = "";
+
+    /* Site */
+    var g = group("Site details", true);
+    hint("Shown in the contact area and footer.", g.body);
+    g.body.appendChild(field("Your name", "site.name"));
+    g.body.appendChild(field("Short name (nav)", "site.shortName"));
+    g.body.appendChild(field("Email shown on site", "site.displayEmail"));
+    g.body.appendChild(field("Real inbox (form sends here)", "site.email"));
+    g.body.appendChild(field("Phone", "site.phone"));
+    g.body.appendChild(field("Location", "site.location"));
+    g.body.appendChild(field("Google Maps link", "site.mapUrl"));
+    g.body.appendChild(field("Map embed URL", "site.mapEmbed"));
+    panel.appendChild(g.el);
+
+    /* Hero */
+    g = group("Hero (top of page)", true);
+    g.body.appendChild(field("Small line above name", "hero.eyebrow"));
+    g.body.appendChild(field("Big heading", "hero.title"));
+    g.body.appendChild(field("Button text", "hero.cta"));
+    g.body.appendChild(field("Intro paragraph", "hero.subtitle", { multiline: true }));
+    panel.appendChild(g.el);
+
+    /* About */
+    g = group("About");
+    g.body.appendChild(field("Section label", "about.kicker"));
+    g.body.appendChild(field("Heading", "about.title"));
+    hint("Each paragraph is one block — add or remove as you like.", g.body);
+    listEditor(g.body, "about.paragraphs", "paragraph", function (box, text, arr, i) {
+      var f = document.createElement("div");
+      f.className = "field";
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.rows = 4;
+      ta.addEventListener("input", function () { arr[i] = ta.value; changed(); });
+      f.appendChild(ta);
+      box.appendChild(f);
+    });
+    hint("Fact rows (age, location…)", g.body);
+    listEditor(g.body, "about.facts", "fact", function (box, fact, arr, i) {
+      var r = document.createElement("div");
+      r.className = "row2";
+      var a = document.createElement("div"); a.className = "field";
+      var ai = document.createElement("input"); ai.value = fact.label || "";
+      ai.addEventListener("input", function () { arr[i].label = ai.value; changed(); });
+      a.appendChild(ai);
+      var b = document.createElement("div"); b.className = "field";
+      var bi = document.createElement("input"); bi.value = fact.value || "";
+      bi.addEventListener("input", function () { arr[i].value = bi.value; changed(); });
+      b.appendChild(bi);
+      r.appendChild(a); r.appendChild(b);
+      box.appendChild(r);
+    }, { label: "", value: "" });
+    g.body.appendChild(imagePicker("About photo (optional)", "about.photo", "4/3"));
+    panel.appendChild(g.el);
+
+    /* College */
+    g = group("College");
+    g.body.appendChild(field("Section label", "college.kicker"));
+    g.body.appendChild(field("Heading", "college.title"));
+    g.body.appendChild(field("Intro line", "college.intro", { multiline: true }));
+    hint("The section is hidden on the site until at least one entry exists.", g.body);
+    listEditor(g.body, "college.items", "college entry", function (box, item, arr, i) {
+      var mk = function (label, key, multiline) {
+        var f = document.createElement("div"); f.className = "field";
+        var l = document.createElement("label"); l.textContent = label;
+        var el = multiline ? document.createElement("textarea") : document.createElement("input");
+        el.value = item[key] || "";
+        el.addEventListener("input", function () { arr[i][key] = el.value; changed(); });
+        f.appendChild(l); f.appendChild(el); box.appendChild(f);
+      };
+      mk("Institution", "institution");
+      mk("Program / stream", "program");
+      mk("Years", "years");
+      mk("Description", "description", true);
+    }, { institution: "", program: "", years: "", description: "" });
+    panel.appendChild(g.el);
+
+    /* Posts */
+    g = group("Blog posts");
+    listEditor(g.body, "posts", "post", function (box, post, arr, i) {
+      var mk = function (label, key, multiline, rows) {
+        var f = document.createElement("div"); f.className = "field";
+        var l = document.createElement("label"); l.textContent = label;
+        var el = multiline ? document.createElement("textarea") : document.createElement("input");
+        if (rows) el.rows = rows;
+        el.value = post[key] == null ? "" : post[key];
+        el.addEventListener("input", function () { arr[i][key] = el.value; changed(); });
+        f.appendChild(l); f.appendChild(el); box.appendChild(f);
+      };
+      mk("Title", "title");
+      mk("Date", "date");
+      mk("Short excerpt", "excerpt", true, 3);
+      mk("Full text (blank line = new paragraph)", "body", true, 6);
+      box.appendChild(imagePicker("Cover image", "posts." + i + ".image", "16/10"));
+    }, { title: "New post", date: "", excerpt: "", body: "", image: "" });
+    panel.appendChild(g.el);
+
+    /* Photos */
+    g = group("Gallery photos");
+    hint("The gallery only appears on the site once you have at least one photo. Images are compressed automatically before upload.", g.body);
+    listEditor(g.body, "photos", "photo", function (box, photo, arr, i) {
+      box.appendChild(imagePicker("Photo", "photos." + i + ".src", "1/1"));
+      var f = document.createElement("div"); f.className = "field";
+      var l = document.createElement("label"); l.textContent = "Caption (optional)";
+      var el = document.createElement("input");
+      el.value = photo.caption || "";
+      el.addEventListener("input", function () { arr[i].caption = el.value; changed(); });
+      f.appendChild(l); f.appendChild(el); box.appendChild(f);
+    }, { src: "", caption: "" });
+    panel.appendChild(g.el);
+
+    /* Hobbies */
+    g = group("Hobbies");
+    listEditor(g.body, "hobbies", "hobby", function (box, hobby, arr, i) {
+      var f = document.createElement("div"); f.className = "field";
+      var l = document.createElement("label"); l.textContent = "Name";
+      var el = document.createElement("input"); el.value = hobby.title || "";
+      el.addEventListener("input", function () { arr[i].title = el.value; changed(); });
+      f.appendChild(l); f.appendChild(el); box.appendChild(f);
+
+      var f2 = document.createElement("div"); f2.className = "field";
+      var l2 = document.createElement("label"); l2.textContent = "Description";
+      var el2 = document.createElement("textarea"); el2.value = hobby.description || "";
+      el2.addEventListener("input", function () { arr[i].description = el2.value; changed(); });
+      f2.appendChild(l2); f2.appendChild(el2); box.appendChild(f2);
+    }, { title: "New hobby", description: "" });
+    panel.appendChild(g.el);
+
+    /* Media */
+    g = group("Videos & music");
+    hint("Paste a YouTube/Vimeo link for video, or a direct file link (mp3, mp4) hosted elsewhere — GitHub can't store large media. Type: video or audio.", g.body);
+    listEditor(g.body, "media", "media item", function (box, item, arr, i) {
+      var f = document.createElement("div"); f.className = "field";
+      var l = document.createElement("label"); l.textContent = "Type";
+      var sel = document.createElement("select");
+      ["video", "audio"].forEach(function (t) {
+        var o = document.createElement("option"); o.value = t; o.textContent = t;
+        if (item.type === t) o.selected = true;
+        sel.appendChild(o);
+      });
+      sel.addEventListener("change", function () { arr[i].type = sel.value; changed(); });
+      f.appendChild(l); f.appendChild(sel); box.appendChild(f);
+
+      var f2 = document.createElement("div"); f2.className = "field";
+      var l2 = document.createElement("label"); l2.textContent = "Link";
+      var el2 = document.createElement("input"); el2.value = item.url || "";
+      el2.placeholder = "https://…";
+      el2.addEventListener("input", function () { arr[i].url = el2.value; changed(); });
+      f2.appendChild(l2); f2.appendChild(el2); box.appendChild(f2);
+
+      var f3 = document.createElement("div"); f3.className = "field";
+      var l3 = document.createElement("label"); l3.textContent = "Title";
+      var el3 = document.createElement("input"); el3.value = item.title || "";
+      el3.addEventListener("input", function () { arr[i].title = el3.value; changed(); });
+      f3.appendChild(l3); f3.appendChild(el3); box.appendChild(f3);
+    }, { type: "video", url: "", title: "" });
+    panel.appendChild(g.el);
+
+    /* Socials */
+    g = group("Social links");
+    listEditor(g.body, "socials", "link", function (box, s, arr, i) {
+      var r = document.createElement("div"); r.className = "row2";
+      var a = document.createElement("div"); a.className = "field";
+      var ai = document.createElement("input"); ai.value = s.label || ""; ai.placeholder = "Facebook";
+      ai.addEventListener("input", function () { arr[i].label = ai.value; changed(); });
+      a.appendChild(ai);
+      var b = document.createElement("div"); b.className = "field";
+      var bi = document.createElement("input"); bi.value = s.url || ""; bi.placeholder = "https://…";
+      bi.addEventListener("input", function () { arr[i].url = bi.value; changed(); });
+      b.appendChild(bi);
+      r.appendChild(a); r.appendChild(b); box.appendChild(r);
+    }, { label: "", url: "" });
+    panel.appendChild(g.el);
+
+    /* Contact + theme */
+    g = group("Contact & theme");
+    g.body.appendChild(field("Contact heading", "contact.title"));
+    g.body.appendChild(field("Contact label", "contact.kicker"));
+    g.body.appendChild(field("Contact intro", "contact.text", { multiline: true }));
+    g.body.appendChild(field("Footer note", "footer.note"));
+
+    var tf = document.createElement("div");
+    tf.className = "field";
+    var tl = document.createElement("label");
+    tl.textContent = "Default theme for visitors";
+    var tsel = document.createElement("select");
+    ["dark", "light"].forEach(function (t) {
+      var o = document.createElement("option"); o.value = t; o.textContent = t === "dark" ? "Dark (default)" : "Light";
+      if ((model.theme && model.theme.default) === t) o.selected = true;
+      tsel.appendChild(o);
+    });
+    tsel.addEventListener("change", function () {
+      model.theme = model.theme || {};
+      model.theme.default = tsel.value;
+      changed();
+    });
+    tf.appendChild(tl); tf.appendChild(tsel); g.body.appendChild(tf);
+    hint("Visitors can still switch light/dark themselves — this only sets the starting point.", g.body);
+    panel.appendChild(g.el);
+
+    /* keep the first two open */
+    pushPreview();
+  }
+
+  /* ---------------- load / publish ---------------- */
+  function loadContent() {
+    setStatus("Loading…");
+    return fetch(API + "/contents/content.json?ref=" + BRANCH, {
+      headers: {
+        "Authorization": "Bearer " + token(),
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28"
+      },
+      cache: "no-store"
+    }).then(function (r) {
+      if (!r.ok) throw new Error(r.status === 401 ? "Key rejected." : "Could not load content.json (HTTP " + r.status + ").");
+      return r.json();
+    }).then(function (data) {
+      sha = data.sha;
+      var json = b64decodeUtf8(data.content);
+      model = JSON.parse(json);
+      if (!model.theme) model.theme = { default: "dark" };
+      rerender();
+      setStatus("Ready", "ok");
+    });
+  }
+
+  function collectDataImages(obj, out) {
+    out = out || [];
+    Object.keys(obj).forEach(function (k) {
+      var v = obj[k];
+      if (typeof v === "string" && v.indexOf("data:image/") === 0) {
+        var ext = /^data:image\/(png|jpeg|jpg|gif)/.test(v) ? "jpg" : "webp";
+        var name = "assets/img/" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 8) + "." + ext;
+        out.push({ value: v, path: name });
+        obj[k] = name;
+      } else if (v && typeof v === "object") {
+        collectDataImages(v, out);
+      }
+    });
+    return out;
+  }
+
+  function publish() {
+    if (busy || !model) return;
+    busy = true;
+    $("publishBtn").disabled = true;
+    setStatus("Publishing…");
+
+    var uploads = collectDataImages(model);
+    var chain = Promise.resolve();
+
+    uploads.forEach(function (u) {
+      chain = chain.then(function () {
+        setStatus("Uploading " + u.path.split("/").pop() + "…");
+        return apiRequest("/contents/" + u.path, "PUT", {
+          message: "Upload image via editor",
+          content: u.value.split(",")[1],
+          branch: BRANCH
+        });
+      });
+    });
+
+    chain.then(function () {
+      setStatus("Saving content…");
+      return fetch(API + "/contents/content.json?ref=" + BRANCH, {
+        headers: { "Authorization": "Bearer " + token(), "Accept": "application/vnd.github+json" },
+        cache: "no-store"
+      }).then(function (r) { return r.json(); }).then(function (fresh) {
+        sha = fresh.sha;
+        return apiRequest("/contents/content.json", "PUT", {
+          message: "Update site content via editor",
+          content: b64encodeUtf8(JSON.stringify(model, null, 2)),
+          sha: sha,
+          branch: BRANCH
+        });
+      });
+    }).then(function () {
+      setStatus("Published", "ok");
+      toast("Published. Live in about 40 seconds.", "ok");
+      busy = false;
+      $("publishBtn").disabled = false;
+    }).catch(function (err) {
+      setStatus("Error", "err");
+      toast(err.message, "err");
+      busy = false;
+      $("publishBtn").disabled = false;
+    });
+  }
+
+  /* ---------------- boot ---------------- */
+  $("loginBtn").addEventListener("click", function () {
+    var value = $("tokenInput").value.trim();
+    if (!value) { $("gateErr").textContent = "Paste a token first."; return; }
+    $("gateErr").textContent = "";
+    $("loginBtn").disabled = true;
+    $("loginBtn").textContent = "Checking…";
+    try { localStorage.setItem(TOKEN_KEY, value); } catch (e) {}
+    loadContent().then(function () {
+      $("gate").style.display = "none";
+    }).catch(function (err) {
+      try { localStorage.removeItem(TOKEN_KEY); } catch (e) {}
+      $("gateErr").textContent = err.message;
+      $("loginBtn").disabled = false;
+      $("loginBtn").textContent = "Unlock editor";
+    });
+  });
+
+  $("tokenInput").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") $("loginBtn").click();
+  });
+
+  $("logoutBtn").addEventListener("click", function () {
+    try { localStorage.removeItem(TOKEN_KEY); } catch (e) {}
+    location.reload();
+  });
+
+  $("reloadBtn").addEventListener("click", function () {
+    if (!confirm("Discard unsaved changes and reload from GitHub?")) return;
+    loadContent().catch(function (err) { toast(err.message, "err"); });
+  });
+
+  $("publishBtn").addEventListener("click", publish);
+
+  if (token()) {
+    loadContent().then(function () {
+      $("gate").style.display = "none";
+    }).catch(function () {
+      setStatus("Sign in again", "err");
+    });
+  }
+})();
+</script>
+</body>
+</html>

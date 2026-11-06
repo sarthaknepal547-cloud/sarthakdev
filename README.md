@@ -99,3 +99,33 @@ Personal photos, writing, and content are mine; please don't republish them as y
 
 Use the contact form on the [live site](https://sarthaknepal547-cloud.github.io/sarthakdev/#contact),
 or start a conversation in [Discussions](../../discussions).
+
+---
+
+## Editing the site (owner only)
+
+The site's text, photos, posts and links live in **`content.json`** — not in the HTML. That
+means you can change anything without touching code.
+
+1. Open **https://sarthakdev.com.np/admin.html**
+2. Paste your GitHub token once (fine-grained, `Contents: Read and write` on this repo)
+3. Edit in the left panel — the real page updates live on the right
+4. Press **Publish** — live in about 40 seconds
+
+Visitors never see this. `admin.html` is `noindex`, unlinked, and inert without your token.
+
+### Media
+
+- **Photos** — upload in the editor, compressed to WebP automatically before upload
+- **Video and audio** — link to YouTube/Vimeo or a file hosted elsewhere (Cloudflare R2).
+  GitHub rejects files over 100 MB, and large media bloats the repo permanently.
+
+### How it fits together
+
+| File | Purpose |
+| --- | --- |
+| `index.html` | The whole site — styling and rendering, no content |
+| `content.json` | All editable content |
+| `admin.html` | Owner editor (token-gated) |
+| `404.html` | Friendly not-found page |
+| `assets/img/` | Photos uploaded through the editor |
