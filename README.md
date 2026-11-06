@@ -13,16 +13,19 @@ This is a single-page personal website built with plain HTML, CSS, and JavaScrip
 step, no frameworks, no dependencies. It is hosted for free on GitHub Pages straight from the
 `main` branch.
 
-## Sections
+## Rooms
 
-| Section | What's there |
+The site is a 3D animated hub, not a scrolling page. Six rooms open as full-screen
+spatial views:
+
+| Room | What's there |
 | --- | --- |
-| **Home** | Hero intro and welcome message |
-| **About** | Short introduction and background |
-| **Blog** | Six posts on daily life, Bhaktapur, studies, Dashain, photography, and future dreams |
-| **Gallery** | Photo grid with a click-to-enlarge lightbox |
-| **Hobbies** | Photography, reading, hiking, music, coding, cooking |
-| **Contact** | Contact form and links |
+| **Photos** | Masonry gallery with lightbox |
+| **Writing** | Blog posts, opened in a reader overlay |
+| **Motion** | Video and audio (YouTube/Vimeo embeds, or link cards) |
+| **About** | Intro, facts, and hobbies |
+| **Study** | College / course timeline |
+| **Contact** | Email, phone, map, socials, and a form |
 
 ## Tech stack
 
