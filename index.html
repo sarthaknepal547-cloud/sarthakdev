@@ -143,12 +143,12 @@ html[data-theme="light"] .i-sun { display: none; } html[data-theme="light"] .i-m
   -webkit-background-clip: text; background-clip: text; color: transparent;
   filter: drop-shadow(0 18px 44px rgba(232,98,44,.20));
 }
-.name span { display: inline-block; opacity: 0; transform: translateY(.5em) rotateX(-55deg); animation: letterIn .95s var(--ease-out) forwards; animation-delay: calc(var(--i) * .038s); }
-@keyframes letterIn { to { opacity: 1; transform: none; } }
+.name span { display: inline-block; animation: letterIn .95s var(--ease-out) both; animation-delay: calc(var(--i) * .038s); }
+@keyframes letterIn { from { opacity: 0; transform: translateY(.5em) rotateX(-55deg); } to { opacity: 1; transform: none; } }
 .sub {
   max-width: 46ch; margin: clamp(.9rem,2.4vh,1.6rem) auto 0;
   color: var(--muted); font-size: clamp(.86rem, 2.1vw, 1rem); line-height: 1.6;
-  opacity: 0; animation: fadeUp .9s var(--ease) .55s forwards;
+  animation: fadeUp .9s var(--ease) .55s both;
 }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 
@@ -181,7 +181,7 @@ html[data-theme="light"] .i-sun { display: none; } html[data-theme="light"] .i-m
   display: flex; flex-direction: column; justify-content: flex-end; gap: .2rem;
   transform-style: preserve-3d;
   transition: border-color .4s, transform .5s var(--ease), background .4s;
-  opacity: 0; animation: tileIn .8s var(--ease-out) forwards; animation-delay: calc(.62s + var(--i) * .07s);
+  animation: tileIn .8s var(--ease-out) both; animation-delay: calc(.62s + var(--i) * .07s);
   will-change: transform;
 }
 @keyframes tileIn { from { opacity: 0; transform: translateY(30px) scale(.96); } to { opacity: 1; transform: none; } }
@@ -230,7 +230,7 @@ html[data-theme="light"] .i-sun { display: none; } html[data-theme="light"] .i-m
 .hint {
   text-align: center; margin: clamp(.9rem,2.4vh,1.6rem) 0 0;
   font-size: .68rem; letter-spacing: .26em; text-transform: uppercase; color: var(--muted);
-  opacity: 0; animation: fadeUp 1s var(--ease) 1.25s forwards;
+  animation: fadeUp 1s var(--ease) 1.25s both;
 }
 
 /* ══════════ PORTAL ══════════ */
@@ -279,12 +279,12 @@ html[data-theme="light"] .i-sun { display: none; } html[data-theme="light"] .i-m
 .room__wrap { max-width: 1120px; margin: 0 auto; }
 
 /* room entrance stagger */
-.room .rise { opacity: 0; transform: translateY(26px) scale(.985); }
+.room .rise { }
 .room.on .rise {
-  animation: rise .75s var(--ease-out) forwards;
+  animation: rise .75s var(--ease-out) both;
   animation-delay: calc(.06s + var(--i, 0) * .055s);
 }
-@keyframes rise { to { opacity: 1; transform: none; } }
+@keyframes rise { from { opacity: 0; transform: translateY(26px) scale(.985); } to { opacity: 1; transform: none; } }
 
 /* ══════════ SHARED CONTENT ══════════ */
 .lede { color: var(--muted); max-width: 52ch; margin: 0 0 2rem; font-size: .96rem; }
