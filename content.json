@@ -9,10 +9,10 @@
   },
   "site": {
     "name": "Sarthak Dev Nepal",
-    "shortName": "Sarthak",
+    "shortName": "SARTHAK",
     "location": "Katunje-05, Suryabinayak, Bhaktapur",
     "email": "sarthaknepal547@gmail.com",
-    "displayEmail": "sarthak@sarthakdev.com.np",
+    "displayEmail": "sarthaknepal547@gmail.com",
     "phone": "+977 9849280814",
     "phoneRaw": "+9779849280814",
     "mapUrl": "https://maps.app.goo.gl/n8CHuFcQU5n6gZLQ6",
@@ -50,11 +50,15 @@
       },
       {
         "label": "Community",
-        "value": "Suddha Bahun"
+        "value": "BHRAMIN"
       },
       {
         "label": "Studying",
-        "value": "College — see below"
+        "value": "CA FOUNDATION"
+      },
+      {
+        "label": "",
+        "value": ""
       }
     ],
     "photo": "",
@@ -66,55 +70,55 @@
     "intro": "My studies, in short — what I'm learning and where it's taking me.",
     "items": [
       {
-        "institution": "Your college name",
-        "program": "",
-        "years": "",
+        "institution": "GURUKUL CA",
+        "program": "CA FOUNDATION",
+        "years": "4.5 years",
         "description": ""
       }
     ]
   },
   "posts": [
     {
-      "title": "My Morning Rituals",
-      "date": "October 15, 2023",
-      "excerpt": "Starting the day with intention has transformed my life. Here's how I structure my mornings for maximum productivity and peace of mind.",
-      "body": "Starting the day with intention has transformed my life. I wake before the city does, open the window, and let the cold Bhaktapur air do half the work of waking me up.\n\nHere's how I structure my mornings for maximum productivity and peace of mind — a few small rituals, done the same way every day, until they stopped feeling like effort.",
-      "image": ""
+      "title": "",
+      "date": "",
+      "excerpt": "",
+      "body": "",
+      "image": "assets/img/mw51w7xf-6glzrn.webp"
     },
     {
-      "title": "Hidden Gems of Bhaktapur",
-      "date": "October 10, 2023",
-      "excerpt": "Beyond the tourist spots, Bhaktapur holds countless treasures. Join me as I explore the lesser-known corners of my beloved hometown.",
-      "body": "Beyond the tourist spots, Bhaktapur holds countless treasures. The courtyards behind the main squares, the little shrines nobody photographs, the tea shops where everyone knows your name.\n\nJoin me as I explore the lesser-known corners of my beloved hometown.",
-      "image": ""
+      "title": "",
+      "date": "",
+      "excerpt": "",
+      "body": "",
+      "image": "assets/img/mw51w7xf-0mhqr6.webp"
     },
     {
       "title": "Balancing Studies and Passions",
-      "date": "October 5, 2023",
-      "excerpt": "As a student with diverse interests, finding the right balance has been crucial. Here are my strategies for managing time effectively.",
-      "body": "As a student with diverse interests, finding the right balance has been crucial. College, photography, code, family — all of it wants the same hours.\n\nHere are my strategies for managing time effectively, without pretending I've mastered it.",
+      "date": "",
+      "excerpt": "",
+      "body": "",
       "image": ""
     },
     {
       "title": "Celebrating Dashain with Family",
-      "date": "September 28, 2023",
+      "date": "",
       "excerpt": "Dashain is more than just a festival — it's a time of connection, tradition, and joy. Here's how my family and I celebrated this year.",
       "body": "Dashain is more than just a festival — it's a time of connection, tradition, and joy. The whole family gathers, the house fills up, and the days blur into food and laughter.\n\nHere's how my family and I celebrated this year.",
-      "image": ""
+      "image": "assets/img/mw51w7xf-105dai.webp"
     },
     {
-      "title": "My Photography Journey",
-      "date": "September 20, 2023",
+      "title": "",
+      "date": "",
       "excerpt": "Capturing moments has become one of my greatest passions. From my first camera to my favorite subjects, here's my story.",
-      "body": "Capturing moments has become one of my greatest passions. It started with borrowed phones and bad framing, and grew into something I plan my days around.\n\nFrom my first camera to my favourite subjects, here's my story.",
-      "image": ""
+      "body": "",
+      "image": "assets/img/mw51w7xf-mmv0q6.webp"
     },
     {
-      "title": "Dreams for the Future",
-      "date": "September 15, 2023",
-      "excerpt": "At 18, the future feels both exciting and uncertain. Here are my aspirations and the steps I'm taking to achieve them.",
+      "title": "",
+      "date": "",
+      "excerpt": "",
       "body": "At 18, the future feels both exciting and uncertain. I know roughly what I want — to build things on the web, to keep taking photographs, to stay close to home while reaching further.\n\nHere are my aspirations and the steps I'm taking to achieve them.",
-      "image": ""
+      "image": "assets/img/mw51w7xf-uvojhv.webp"
     }
   ],
   "photos": [],
@@ -144,7 +148,13 @@
       "description": "Experimenting with flavours and creating meals. Nepali cuisine is my specialty, but I love exploring international dishes too."
     }
   ],
-  "media": [],
+  "media": [
+    {
+      "type": "video",
+      "url": "https://photos.app.goo.gl/EUnv5XghTzwpL9W56",
+      "title": "<3"
+    }
+  ],
   "contact": {
     "title": "Get in touch",
     "kicker": "Say hello",
@@ -152,6 +162,12 @@
     "showForm": true
   },
   "footer": {
-    "note": "Made in Bhaktapur."
-  }
+    "note": "<3"
+  },
+  "socials": [
+    {
+      "label": "instagram",
+      "url": "https://www.instagram.com/_elytraa/"
+    }
+  ]
 }
