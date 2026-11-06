@@ -1,0 +1,142 @@
+{
+  "meta": {
+    "version": 1,
+    "updated": "2026-11-06"
+  },
+  "theme": {
+    "default": "dark",
+    "allowViewerToggle": true
+  },
+  "site": {
+    "name": "Sarthak Dev Nepal",
+    "shortName": "Sarthak",
+    "location": "Katunje-05, Suryabinayak, Bhaktapur",
+    "email": "sarthaknepal547@gmail.com",
+    "displayEmail": "sarthak@sarthakdev.com.np",
+    "phone": "+977 9849280814",
+    "phoneRaw": "+9779849280814",
+    "mapUrl": "https://maps.app.goo.gl/n8CHuFcQU5n6gZLQ6",
+    "mapEmbed": "https://www.google.com/maps?q=27.6624013,85.4053358&z=16&output=embed",
+    "socials": [
+      { "label": "Facebook", "url": "https://www.facebook.com/S4RTH4K" }
+    ]
+  },
+  "hero": {
+    "eyebrow": "Bhaktapur · Nepal",
+    "title": "Sarthak Dev Nepal",
+    "subtitle": "I'm 18, from Bhaktapur, and this is where I keep my life — the photos I take, the things I write, and the work I'm building.",
+    "cta": "Look around",
+    "photo": ""
+  },
+  "about": {
+    "title": "About",
+    "kicker": "Who I am",
+    "paragraphs": [
+      "Born and raised in the beautiful city of Bhaktapur, I'm an 18-year-old with a curious mind and a heart full of dreams. As a member of the Suddha Bahun community, I've grown up surrounded by rich cultural traditions that have shaped my perspective on life.",
+      "From a young age I've been fascinated by the world around me — from the ancient architecture of my hometown to the digital landscapes of the internet. I believe in living life to the fullest, embracing new experiences, and constantly learning and growing.",
+      "My journey is just beginning, and I'm excited to share it with you through this website. Here you'll find glimpses into my daily life, my passions, and the things that make me who I am."
+    ],
+    "facts": [
+      { "label": "Age", "value": "18" },
+      { "label": "Based in", "value": "Bhaktapur, Nepal" },
+      { "label": "Community", "value": "Suddha Bahun" },
+      { "label": "Studying", "value": "College — see below" }
+    ],
+    "photo": "",
+    "photoCaption": ""
+  },
+  "college": {
+    "title": "College",
+    "kicker": "Where I study",
+    "intro": "My studies, in short — what I'm learning and where it's taking me.",
+    "items": [
+      {
+        "institution": "Your college name",
+        "program": "Program or stream",
+        "years": "Years",
+        "description": "One or two lines about what you're studying and what you enjoy about it. Edit this from the admin page."
+      }
+    ]
+  },
+  "posts": [
+    {
+      "title": "My Morning Rituals",
+      "date": "October 15, 2023",
+      "excerpt": "Starting the day with intention has transformed my life. Here's how I structure my mornings for maximum productivity and peace of mind.",
+      "body": "Starting the day with intention has transformed my life. I wake before the city does, open the window, and let the cold Bhaktapur air do half the work of waking me up.\n\nHere's how I structure my mornings for maximum productivity and peace of mind — a few small rituals, done the same way every day, until they stopped feeling like effort.",
+      "image": ""
+    },
+    {
+      "title": "Hidden Gems of Bhaktapur",
+      "date": "October 10, 2023",
+      "excerpt": "Beyond the tourist spots, Bhaktapur holds countless treasures. Join me as I explore the lesser-known corners of my beloved hometown.",
+      "body": "Beyond the tourist spots, Bhaktapur holds countless treasures. The courtyards behind the main squares, the little shrines nobody photographs, the tea shops where everyone knows your name.\n\nJoin me as I explore the lesser-known corners of my beloved hometown.",
+      "image": ""
+    },
+    {
+      "title": "Balancing Studies and Passions",
+      "date": "October 5, 2023",
+      "excerpt": "As a student with diverse interests, finding the right balance has been crucial. Here are my strategies for managing time effectively.",
+      "body": "As a student with diverse interests, finding the right balance has been crucial. College, photography, code, family — all of it wants the same hours.\n\nHere are my strategies for managing time effectively, without pretending I've mastered it.",
+      "image": ""
+    },
+    {
+      "title": "Celebrating Dashain with Family",
+      "date": "September 28, 2023",
+      "excerpt": "Dashain is more than just a festival — it's a time of connection, tradition, and joy. Here's how my family and I celebrated this year.",
+      "body": "Dashain is more than just a festival — it's a time of connection, tradition, and joy. The whole family gathers, the house fills up, and the days blur into food and laughter.\n\nHere's how my family and I celebrated this year.",
+      "image": ""
+    },
+    {
+      "title": "My Photography Journey",
+      "date": "September 20, 2023",
+      "excerpt": "Capturing moments has become one of my greatest passions. From my first camera to my favorite subjects, here's my story.",
+      "body": "Capturing moments has become one of my greatest passions. It started with borrowed phones and bad framing, and grew into something I plan my days around.\n\nFrom my first camera to my favourite subjects, here's my story.",
+      "image": ""
+    },
+    {
+      "title": "Dreams for the Future",
+      "date": "September 15, 2023",
+      "excerpt": "At 18, the future feels both exciting and uncertain. Here are my aspirations and the steps I'm taking to achieve them.",
+      "body": "At 18, the future feels both exciting and uncertain. I know roughly what I want — to build things on the web, to keep taking photographs, to stay close to home while reaching further.\n\nHere are my aspirations and the steps I'm taking to achieve them.",
+      "image": ""
+    }
+  ],
+  "photos": [],
+  "hobbies": [
+    {
+      "title": "Photography",
+      "description": "Capturing moments and telling stories through my lens. From landscapes to portraits, photography lets me see the world differently."
+    },
+    {
+      "title": "Reading",
+      "description": "Exploring different worlds through books. Fiction, philosophy, and self-improvement are my favourite genres."
+    },
+    {
+      "title": "Hiking",
+      "description": "Discovering the natural beauty of Nepal. The mountains call to me, offering adventure and peace."
+    },
+    {
+      "title": "Music",
+      "description": "From traditional Nepali tunes to contemporary beats, music is the soundtrack to my life."
+    },
+    {
+      "title": "Coding",
+      "description": "Building digital solutions and exploring the world of technology. Web development is my current focus."
+    },
+    {
+      "title": "Cooking",
+      "description": "Experimenting with flavours and creating meals. Nepali cuisine is my specialty, but I love exploring international dishes too."
+    }
+  ],
+  "media": [],
+  "contact": {
+    "title": "Get in touch",
+    "kicker": "Say hello",
+    "text": "Whether you have questions, want to collaborate, or just want to say hello — I'm always happy to meet new people.",
+    "showForm": true
+  },
+  "footer": {
+    "note": "Made in Bhaktapur."
+  }
+}
