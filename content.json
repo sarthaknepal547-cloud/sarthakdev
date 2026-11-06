@@ -18,7 +18,10 @@
     "mapUrl": "https://maps.app.goo.gl/n8CHuFcQU5n6gZLQ6",
     "mapEmbed": "https://www.google.com/maps?q=27.6624013,85.4053358&z=16&output=embed",
     "socials": [
-      { "label": "Facebook", "url": "https://www.facebook.com/S4RTH4K" }
+      {
+        "label": "Facebook",
+        "url": "https://www.facebook.com/S4RTH4K"
+      }
     ]
   },
   "hero": {
@@ -37,10 +40,22 @@
       "My journey is just beginning, and I'm excited to share it with you through this website. Here you'll find glimpses into my daily life, my passions, and the things that make me who I am."
     ],
     "facts": [
-      { "label": "Age", "value": "18" },
-      { "label": "Based in", "value": "Bhaktapur, Nepal" },
-      { "label": "Community", "value": "Suddha Bahun" },
-      { "label": "Studying", "value": "College — see below" }
+      {
+        "label": "Age",
+        "value": "18"
+      },
+      {
+        "label": "Based in",
+        "value": "Bhaktapur, Nepal"
+      },
+      {
+        "label": "Community",
+        "value": "Suddha Bahun"
+      },
+      {
+        "label": "Studying",
+        "value": "College — see below"
+      }
     ],
     "photo": "",
     "photoCaption": ""
@@ -52,9 +67,9 @@
     "items": [
       {
         "institution": "Your college name",
-        "program": "Program or stream",
-        "years": "Years",
-        "description": "One or two lines about what you're studying and what you enjoy about it. Edit this from the admin page."
+        "program": "",
+        "years": "",
+        "description": ""
       }
     ]
   },
