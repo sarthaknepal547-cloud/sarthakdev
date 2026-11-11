@@ -103,22 +103,42 @@ html[data-theme="light"] .vignette { background: radial-gradient(ellipse at 50% 
 /* ══════════ TOP BAR ══════════ */
 .topbar {
   position: fixed; top: 0; left: 0; right: 0; z-index: 50;
-  display: flex; align-items: center; gap: 1rem;
-  padding: clamp(.8rem,2vw,1.4rem) clamp(1rem,4vw,2.4rem);
+  display: flex; align-items: center; gap: .7rem; flex-wrap: nowrap;
+  padding: calc(env(safe-area-inset-top, 0px) + .7rem) clamp(.9rem, 3.5vw, 2.2rem) 1.3rem;
   pointer-events: none;
+  background: linear-gradient(to bottom,
+    var(--bg) 0%, var(--bg) 42%, color-mix(in srgb, var(--bg) 72%, transparent) 72%, transparent 100%);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  -webkit-mask-image: none; mask-image: none;
 }
 .topbar > * { pointer-events: auto; }
-.brand { display: flex; align-items: center; gap: .6rem; margin-right: auto; }
-.brand b {
-  font-family: var(--font-display); font-weight: 400;
-  font-size: 1.22rem; letter-spacing: .01em; color: var(--text); line-height: 1;
+.brand { display: flex; align-items: center; gap: .55rem; margin-right: auto; min-width: 0; }
+.brand__mark {
+  flex: 0 0 auto; width: 32px; height: 32px; border-radius: 9px;
+  display: grid; place-items: center; line-height: 1;
+  background: linear-gradient(135deg, var(--accent), var(--gold));
+  color: #FFF8F0; font-family: var(--font-display); font-size: 1.08rem;
+  box-shadow: 0 8px 22px var(--card-glow);
+}
+.brand__name {
+  font-family: var(--font-display); font-size: 1.16rem; letter-spacing: .01em;
+  color: var(--text); line-height: 1; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis; max-width: 42vw;
 }
 .brand__loc {
-  display: inline-flex; align-items: center; gap: .55rem;
-  font-size: .66rem; letter-spacing: .22em; text-transform: uppercase; color: var(--muted);
+  display: inline-flex; align-items: center; gap: .5rem; flex: 0 0 auto;
+  font-size: .62rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted);
+  white-space: nowrap;
 }
-.brand__loc::before { content: ""; width: 22px; height: 1px; background: var(--line-2); }
-@media (max-width: 560px) { .brand__loc { display: none; } }
+.brand__loc::before { content: ""; width: 16px; height: 1px; background: var(--line-2); }
+@media (max-width: 640px) {
+  .brand__loc { display: none; }
+  .brand__name { font-size: 1rem; }
+  .brand__mark { width: 27px; height: 27px; font-size: .95rem; border-radius: 8px; }
+  .clock { display: none; }
+  .toolbtn { width: 34px; height: 34px; }
+  .iconbtn { width: 34px; height: 34px; }
+}
 .brand b { color: var(--text); font-weight: 500; }
 .pip { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px rgba(232,98,44,.18); animation: pipPulse 3s ease-in-out infinite; }
 @keyframes pipPulse { 50% { box-shadow: 0 0 0 9px rgba(232,98,44,0); } }
@@ -137,7 +157,7 @@ html[data-theme="light"] .i-sun { display: none; } html[data-theme="light"] .i-m
   position: relative; z-index: 3;
   height: 100%; display: flex; flex-direction: column; justify-content: safe center;
   overflow-y: auto; overflow-x: hidden;
-  padding: clamp(3.5rem,9vh,6rem) clamp(1rem,4vw,2.6rem) clamp(1.5rem,4vh,3rem);
+  padding: calc(env(safe-area-inset-top, 0px) + clamp(5rem, 13vh, 7.5rem)) clamp(1rem,4vw,2.6rem) clamp(1.5rem,4vh,3rem);
   perspective: 1400px;
   transition: opacity .5s var(--ease), filter .5s var(--ease), transform .6s var(--ease);
 }
@@ -303,7 +323,7 @@ html[data-theme="light"] .spot.live { opacity: .42; }
 .room__inner { position: relative; height: 100%; display: flex; flex-direction: column; }
 .room__bar {
   display: flex; align-items: center; gap: 1rem; flex: 0 0 auto;
-  padding: clamp(.9rem,2.4vw,1.5rem) clamp(1rem,4vw,2.4rem);
+  padding: calc(env(safe-area-inset-top, 0px) + clamp(.8rem,2.2vw,1.3rem)) clamp(1rem,4vw,2.4rem) clamp(.8rem,2.2vw,1.2rem);
   border-bottom: 1px solid var(--line);
   background: linear-gradient(var(--bg), transparent);
   -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
@@ -478,10 +498,33 @@ form.cform { display: grid; gap: .75rem; }
 .ov-prev { left: 1.6rem; top: 50%; transform: translateY(-50%); }
 .ov-next { right: 1.6rem; top: 50%; transform: translateY(-50%); }
 .reader.on { display: block; overflow-y: auto; padding: clamp(1rem,5vw,3rem); }
-.reader__inner { max-width: 660px; margin: 3rem auto; background: var(--surface-solid); border: 1px solid var(--line); border-radius: 20px; padding: clamp(1.5rem,5vw,2.8rem); animation: pop .55s var(--ease-out); }
+.reader__inner { max-width: 660px; margin: 4rem auto 5rem; background: var(--surface-solid); border: 1px solid var(--line); border-radius: 20px; padding: clamp(1.5rem,5vw,2.8rem); animation: pop .55s var(--ease-out); }
 .reader__inner h2 { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.7rem,5vw,2.5rem); line-height: 1.1; margin: .4rem 0 1.2rem; }
 .reader__inner p { color: var(--muted); margin: 0 0 1rem; }
-.reader__close { float: right; }
+.reader { overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+.reader.on { display: block; animation: readerIn .4s var(--ease); }
+@keyframes readerIn { from { opacity: 0; } to { opacity: 1; } }
+.reader__close {
+  position: fixed; float: none; z-index: 3;
+  top: calc(env(safe-area-inset-top, 0px) + 1rem);
+  right: calc(env(safe-area-inset-right, 0px) + 1rem);
+}
+.reader__nav {
+  display: flex; gap: .6rem; align-items: center; justify-content: space-between;
+  margin-top: 1.6rem; padding-top: 1.2rem; border-top: 1px solid var(--line);
+  clear: both;
+}
+.reader__nav button {
+  flex: 0 1 auto; max-width: 46%; display: inline-flex; align-items: center; gap: .45rem;
+  padding: .6rem .9rem; border-radius: 11px; cursor: pointer;
+  border: 1px solid var(--line-2); background: transparent; color: var(--muted);
+  font: inherit; font-size: .78rem; line-height: 1.2; text-align: left;
+  transition: color .2s, border-color .2s, background .2s, transform .3s var(--ease);
+}
+.reader__nav button:hover { color: var(--text); border-color: var(--accent); background: var(--card); transform: translateY(-1px); }
+.reader__nav button span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.reader__nav .rn-next { margin-left: auto; text-align: right; }
+.reader__nav .rn-dot { flex: 0 0 auto; font-size: .62rem; letter-spacing: .18em; color: var(--muted); }
 
 /* ══════════ TOOLBAR ══════════ */
 .tools { display: flex; align-items: center; gap: .45rem; }
@@ -601,6 +644,52 @@ html.lite #field, html.lite .spot, html.lite .grain { display: none; }
 html.lite .aurora { opacity: .45; filter: blur(60px); }
 html.lite .tile, html.lite .panel { -webkit-backdrop-filter: none; backdrop-filter: none; }
 
+/* ══════════ LIGHTBOX EXTRAS ══════════ */
+.lb-count {
+  position: absolute; top: 1.7rem; left: 50%; transform: translateX(-50%);
+  font-size: .72rem; letter-spacing: .2em; color: var(--muted); font-variant-numeric: tabular-nums;
+}
+.lb-dl { top: 1.6rem; right: 4.4rem; }
+#lbImg { cursor: zoom-in; transition: transform .35s var(--ease); touch-action: pinch-zoom; }
+#lbImg.zoomed { cursor: zoom-out; transform: scale(2); }
+
+/* ══════════ SAVED POSTS ══════════ */
+.save-btn {
+  position: absolute; top: .6rem; right: .6rem; z-index: 3;
+  width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;
+  border: 1px solid var(--line-2); background: var(--surface-solid); color: var(--muted);
+  cursor: pointer; font-size: .8rem; transition: all .25s;
+}
+.save-btn:hover { border-color: var(--accent); color: var(--accent); }
+.save-btn.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.post-card { position: relative; }
+.saved-row { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0 0 1.4rem; }
+.saved-chip {
+  display: inline-flex; align-items: center; gap: .5rem; padding: .45rem .85rem;
+  border: 1px solid var(--line-2); border-radius: 100px; background: var(--surface);
+  font-size: .8rem; cursor: pointer; color: var(--text);
+}
+.saved-chip:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ══════════ SHORTCUTS SHEET ══════════ */
+.keys {
+  position: fixed; inset: 0; z-index: 170; display: none; place-items: center; padding: 1.2rem;
+  background: var(--scrim); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+}
+.keys.on { display: grid; }
+.keys__box {
+  width: min(440px, 100%); background: var(--surface-solid); border: 1px solid var(--line-2);
+  border-radius: 18px; padding: 1.5rem; box-shadow: var(--shadow); animation: pop .35s var(--ease-out);
+}
+.keys h3 { font-family: var(--font-display); font-weight: 400; font-size: 1.4rem; margin: 0 0 1rem; }
+.keys__row { display: flex; align-items: center; gap: .8rem; padding: .5rem 0; border-bottom: 1px solid var(--line); font-size: .87rem; }
+.keys__row:last-child { border-bottom: 0; }
+.keys__row span { color: var(--muted); margin-left: auto; }
+kbd {
+  font-family: ui-monospace, monospace; font-size: .74rem; padding: .2rem .45rem;
+  border: 1px solid var(--line-2); border-bottom-width: 2px; border-radius: 6px; color: var(--text);
+}
+
 /* ══════════ A11Y / MOTION ══════════ */
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) {
@@ -620,8 +709,8 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
 
 <div class="topbar">
   <div class="brand">
-    <span class="pip" aria-hidden="true"></span>
-    <b>Sarthak</b>
+    <span class="brand__mark" aria-hidden="true">S</span>
+    <span class="brand__name" id="brandName">Sarthak</span>
     <span class="brand__loc" id="brandLoc">Bhaktapur</span>
   </div>
   <div class="tools">
@@ -670,6 +759,8 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
   <button class="ov-btn ov-close" id="lbClose" aria-label="Close">&times;</button>
   <button class="ov-btn ov-prev" id="lbPrev" aria-label="Previous">&#8249;</button>
+  <span class="lb-count" id="lbCount"></span>
+  <button class="ov-btn lb-dl" id="lbDl" aria-label="Download photo">↓</button>
   <img id="lbImg" alt="">
   <button class="ov-btn ov-next" id="lbNext" aria-label="Next">&#8250;</button>
   <span class="lb-cap" id="lbCap"></span>
@@ -677,11 +768,12 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
 
 <div class="reader" id="reader" role="dialog" aria-modal="true" aria-labelledby="readerTitle">
   <div class="reader__prog" id="readerProg"></div>
+  <button class="ov-btn reader__close" id="readerClose" aria-label="Close">&times;</button>
   <div class="reader__inner">
-    <button class="ov-btn reader__close" id="readerClose" aria-label="Close">&times;</button>
     <span class="post-card__date" id="readerDate"></span>
     <h2 id="readerTitle"></h2>
     <div id="readerBody"></div>
+    <div class="reader__nav" id="readerNav"></div>
   </div>
 </div>
 
@@ -702,6 +794,18 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
     <div class="cam__filters" id="camFilters"></div>
     <div class="cam__row" id="camActions"></div>
     <p class="cam__note">Photos you take here stay in <strong>your</strong> browser — they are not uploaded or shown to anyone else. Use Download or Share to keep one.</p>
+  </div>
+</div>
+
+<div class="keys" id="keys" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts">
+  <div class="keys__box">
+    <h3>Keyboard</h3>
+    <div class="keys__row"><kbd>1</kbd>–<kbd>6</kbd><span>Open a room</span></div>
+    <div class="keys__row"><kbd>⌘K</kbd> / <kbd>Ctrl K</kbd><span>Search &amp; commands</span></div>
+    <div class="keys__row"><kbd>Esc</kbd><span>Step back</span></div>
+    <div class="keys__row"><kbd>M</kbd><span>Ambient music</span></div>
+    <div class="keys__row"><kbd>T</kbd><span>Light / dark</span></div>
+    <div class="keys__row"><kbd>?</kbd><span>This list</span></div>
   </div>
 </div>
 
@@ -929,9 +1033,44 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
   };
   function accentFor(key) { return ROOM_ACCENT[key] || "#E8622C"; }
 
+  /* ══════════ HISTORY ══════════
+     Every full-screen view pushes a real history entry, so the phone back
+     gesture returns to the previous view instead of leaving the site. */
+  var ovStack = [];
+  function ovPush(id, hash) {
+    ovStack.push(id);
+    try { history.pushState({ ov: id }, "", hash || (location.pathname + location.search)); } catch (e) {}
+  }
+  function ovReplace(id, hash) {
+    if (ovStack.length) ovStack[ovStack.length - 1] = id; else ovStack.push(id);
+    try { history.replaceState({ ov: id }, "", hash || (location.pathname + location.search)); } catch (e) {}
+  }
+  var backPending = false;
+  function ovClose() {
+    if (!ovStack.length) return false;
+    if (backPending) return true;
+    backPending = true;
+    try { history.back(); }
+    catch (e) { backPending = false; var id = ovStack.pop(); ovCloseSilently(id); }
+    return true;
+  }
+  function ovCloseSilently(id) {
+    if (id.indexOf("room:") === 0) closeRoomView();
+    else if (id === "reader") closeReaderView();
+    else if (id === "lightbox") closeLightboxView();
+    else if (id === "cam") closeCamView();
+  }
+  window.addEventListener("popstate", function () {
+    backPending = false;
+    var id = ovStack.pop();
+    if (id) ovCloseSilently(id);
+  });
+
   function openRoom(key, originEl) {
     if (state.busy) return;
     state.busy = true;
+    var stacked = (ovStack[ovStack.length - 1] || "").indexOf("room:") === 0;
+    if (state.room && state.room !== key) closeRoomView();
     state.room = key;
     var ac = accentFor(key);
     $("room").style.setProperty("--ra", ac);
@@ -944,20 +1083,20 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
       $("hub").setAttribute("inert", "");
       document.body.classList.add("room-open");
       $("roomScroll").scrollTop = 0;
-      history.replaceState(null, "", "#/" + key);
+      if (stacked) ovReplace("room:" + key, "#/" + key);
+      else ovPush("room:" + key, "#/" + key);
       setTimeout(function () { $("backBtn").focus(); }, 80);
       state.busy = false;
     });
   }
 
-  function closeRoom() {
+  function closeRoomView() {
     if (state.busy) return;
     state.busy = true;
     $("room").classList.remove("on");
     $("hub").classList.remove("dim");
     $("hub").removeAttribute("inert");
     document.body.classList.remove("room-open");
-    history.replaceState(null, "", location.pathname);
     state.room = null;
     portalClose();
     setTimeout(function () { state.busy = false; }, 260);
@@ -992,12 +1131,20 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
       if (!state.posts.length) {
         body = '<div class="empty"' + rise(0) + '><h3>Nothing written yet</h3><p>Add a post in the <a href="admin.html">editor</a> and it lands here.</p></div>';
       } else {
-        body = '<p class="lede"' + rise(0) + '>Notes from daily life — moments, places, and things worth remembering.</p><div class="grid-cards">' +
+        var savedNow = savedTitles().filter(function (t) { return state.posts.some(function (p) { return p.title === t; }); });
+        var savedRow = savedNow.length
+          ? '<div class="saved-row">' + savedNow.map(function (t) {
+              return '<button class="saved-chip" type="button" data-saved="' + esc(t) + '">★ ' + esc(t) + "</button>";
+            }).join("") + "</div>"
+          : "";
+        body = '<p class="lede"' + rise(0) + '>Notes from daily life — moments, places, and things worth remembering.</p>' + savedRow + '<div class="grid-cards">' +
           state.posts.map(function (p, n) {
             var media = p.image
               ? '<div class="post-card__media"><img src="' + esc(p.image) + '" alt="" loading="lazy"></div>'
               : '<div class="post-card__media"><span>' + esc(p.title.charAt(0)) + "</span></div>";
-            return '<button class="post-card" type="button" data-post="' + n + '"' + rise(n + 1) + ">" + media +
+            var isSv = isSaved(p.title);
+            return '<button class="post-card" type="button" data-post="' + n + '"' + rise(n + 1) + ">" +
+              '<span class="save-btn' + (isSv ? " on" : "") + '" data-save="' + esc(p.title) + '" role="button" tabindex="0" aria-label="Save for later">' + (isSv ? "★" : "☆") + "</span>" + media +
               '<div class="post-card__body">' +
               '<span class="post-card__date">' + (p.date ? esc(p.date) + " · " : "") + readTime(p.body || p.excerpt) + "</span>" +
               '<h3 class="post-card__title">' + esc(p.title) + "</h3>" +
@@ -1110,6 +1257,24 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
     $("roomBody").querySelectorAll("[data-post]").forEach(function (b) {
       b.addEventListener("click", function () { openReader(Number(b.dataset.post)); });
     });
+    $("roomBody").querySelectorAll("[data-save]").forEach(function (b) {
+      b.addEventListener("click", function (e) {
+        e.stopPropagation();
+        var now = toggleSaved(b.dataset.save);
+        b.classList.toggle("on", now);
+        b.textContent = now ? "★" : "☆";
+      });
+      b.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.stopPropagation(); b.click(); }
+      });
+    });
+    $("roomBody").querySelectorAll("[data-saved]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var t = b.dataset.saved;
+        var idx = state.posts.findIndex(function (p) { return p.title === t; });
+        if (idx >= 0) openReader(idx);
+      });
+    });
     var form = $("cform");
     if (form) {
       form.addEventListener("submit", function (e) {
@@ -1128,38 +1293,72 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
   /* ══════════ overlays ══════════ */
   function openLightbox(i) {
     if (!state.photos.length) return;
+    var already = $("lightbox").classList.contains("on");
     state.idx = (i + state.photos.length) % state.photos.length;
     var p = state.photos[state.idx];
     $("lbImg").src = p.src; $("lbImg").alt = p.caption || "";
+    $("lbImg").classList.remove("zoomed");
     $("lbCap").textContent = p.caption || "";
+    $("lbCount").textContent = (state.idx + 1) + " / " + state.photos.length;
     $("lightbox").classList.add("on");
+    if (!already) ovPush("lightbox");
   }
-  function closeLightbox() { $("lightbox").classList.remove("on"); }
-  $("lbClose").addEventListener("click", closeLightbox);
+  function closeLightboxView() { $("lightbox").classList.remove("on"); }
+  $("lbClose").addEventListener("click", function () { ovClose(); });
   $("lbPrev").addEventListener("click", function () { openLightbox(state.idx - 1); });
   $("lbNext").addEventListener("click", function () { openLightbox(state.idx + 1); });
-  $("lightbox").addEventListener("click", function (e) { if (e.target.id === "lightbox") closeLightbox(); });
+  $("lightbox").addEventListener("click", function (e) { if (e.target.id === "lightbox") ovClose(); });
+  $("lbImg").addEventListener("click", function () { $("lbImg").classList.toggle("zoomed"); });
+  $("lbDl").addEventListener("click", function () {
+    var p = state.photos[state.idx]; if (!p) return;
+    var a = document.createElement("a");
+    a.href = p.src; a.download = (p.caption || "photo").replace(/[^\w-]+/g, "-").toLowerCase() + ".jpg";
+    document.body.appendChild(a); a.click(); a.remove();
+    toast("Photo downloading");
+  });
+  var lbTouchX = null;
+  $("lightbox").addEventListener("touchstart", function (e) {
+    lbTouchX = e.changedTouches[0].clientX;
+  }, { passive: true });
+  $("lightbox").addEventListener("touchend", function (e) {
+    if (lbTouchX === null) return;
+    var dx = e.changedTouches[0].clientX - lbTouchX;
+    lbTouchX = null;
+    if (Math.abs(dx) > 55) openLightbox(state.idx + (dx < 0 ? 1 : -1));
+  }, { passive: true });
 
-  function openReader(n) {
+  function openReader(n, swap) {
     var p = state.posts[n]; if (!p) return;
     $("readerDate").textContent = (p.date ? p.date + " · " : "") + readTime(p.body || p.excerpt);
     var prog = $("readerProg"); if (prog) prog.style.width = "0%";
     $("readerTitle").textContent = p.title || "";
     var text = p.body || p.excerpt || "";
     $("readerBody").innerHTML = text.split(/\n{2,}/).map(function (x) { return "<p>" + esc(x) + "</p>"; }).join("");
+    var nav = $("readerNav");
+    if (nav) {
+      var prev = state.posts[n - 1], next = state.posts[n + 1];
+      nav.innerHTML =
+        (prev ? '<button type="button" class="rn-prev" data-go="' + (n - 1) + '">← <span>' + esc(prev.title || "Previous") + "</span></button>" : "<span></span>") +
+        '<span class="rn-dot">' + (n + 1) + " / " + state.posts.length + "</span>" +
+        (next ? '<button type="button" class="rn-next" data-go="' + (n + 1) + '"><span>' + esc(next.title || "Next") + "</span> →</button>" : "<span></span>");
+      nav.querySelectorAll("[data-go]").forEach(function (b) {
+        b.addEventListener("click", function () { openReader(Number(b.dataset.go), true); });
+      });
+    }
     $("reader").classList.add("on");
+    if (!swap) ovPush("reader");
+    else if ($("reader").scrollTop) $("reader").scrollTop = 0;
   }
-  function closeReader() { $("reader").classList.remove("on"); }
-  $("readerClose").addEventListener("click", closeReader);
-  $("reader").addEventListener("click", function (e) { if (e.target.id === "reader") closeReader(); });
+  function closeReaderView() { $("reader").classList.remove("on"); }
+  $("readerClose").addEventListener("click", function () { ovClose(); });
+  $("reader").addEventListener("click", function (e) { if (e.target.id === "reader") ovClose(); });
 
-  $("backBtn").addEventListener("click", closeRoom);
+  $("backBtn").addEventListener("click", function () { ovClose(); });
 
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") {
-      if ($("lightbox").classList.contains("on")) return closeLightbox();
-      if ($("reader").classList.contains("on")) return closeReader();
-      if (state.room) return closeRoom();
+      if ($("pal") && $("pal").classList.contains("on")) { palClose(); return; }
+      if (ovStack.length) { e.preventDefault(); return ovClose(); }
     }
     if ($("lightbox").classList.contains("on")) {
       if (e.key === "ArrowLeft") openLightbox(state.idx - 1);
@@ -1253,7 +1452,7 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
 
   /* ══════════ AMBIENT MUSIC (generated, no audio files) ══════════ */
   var Music = (function () {
-    var ctx = null, master = null, on = false, vol = 0.3, bellTimer = null, built = false;
+    var ctx = null, master = null, on = false, vol = 0.3, bellTimer = null, built = false, scape = "bells";
     function build() {
       var AC = window.AudioContext || window.webkitAudioContext;
       if (!AC) return false;
@@ -1261,7 +1460,7 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
       master = ctx.createGain();
       master.gain.value = 0;
       master.connect(ctx.destination);
-      var base = 196;
+      var base = scape === "night" ? 130.8 : scape === "rain" ? 110 : 196;
       [0.5, 0.75, 1].forEach(function (m, i) {
         var o = ctx.createOscillator(), g = ctx.createGain(), lp = ctx.createBiquadFilter();
         o.type = i === 2 ? "triangle" : "sine";
@@ -1274,6 +1473,16 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
         lfo.frequency.value = 0.024 + i * 0.017; lg.gain.value = 250;
         lfo.connect(lg); lg.connect(lp.frequency); lfo.start();
       });
+      if (scape === "rain") {
+        var len = ctx.sampleRate * 3;
+        var buf = ctx.createBuffer(1, len, ctx.sampleRate);
+        var data = buf.getChannelData(0);
+        for (var n2 = 0; n2 < len; n2++) data[n2] = (Math.random() * 2 - 1) * 0.35;
+        var src2 = ctx.createBufferSource(); src2.buffer = buf; src2.loop = true;
+        var bp = ctx.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = 1400; bp.Q.value = 0.6;
+        var ng = ctx.createGain(); ng.gain.value = 0.16;
+        src2.connect(bp); bp.connect(ng); ng.connect(master); src2.start();
+      }
       built = true;
       return true;
     }
@@ -1291,6 +1500,15 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
       o.start(t); o.stop(t + 3.6);
     }
     return {
+      mode: "bells",
+      setMode: function (k) {
+        var was = on;
+        if (on) { on = false; master.gain.cancelScheduledValues(ctx.currentTime); master.gain.linearRampToValueAtTime(0, ctx.currentTime + .3); clearInterval(bellTimer); }
+        scape = k;
+        built = false;
+        setTimeout(function () { if (was) { Music.toggle(); var b = $("musicBtn"); if (b) { b.classList.add("on"); b.setAttribute("aria-pressed", "true"); } } }, 340);
+      },
+      scape: function () { return scape; },
       toggle: function () {
         if (!built && !build()) { toast("Audio isn't available in this browser"); return false; }
         if (ctx.state === "suspended") ctx.resume();
@@ -1300,7 +1518,8 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
         if (on) {
           bell();
           clearInterval(bellTimer);
-          bellTimer = setInterval(function () { if (Math.random() < 0.8) bell(); }, 2500);
+          var rate = scape === "night" ? 5200 : scape === "rain" ? 6400 : 2500;
+          bellTimer = setInterval(function () { if (Math.random() < 0.8) bell(); }, rate);
         } else { clearInterval(bellTimer); bellTimer = null; }
         try { localStorage.setItem("sdn-music", on ? "1" : "0"); } catch (e) {}
         return on;
@@ -1346,11 +1565,25 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
     var acts = [];
     ["photos", "writing", "videos", "about", "college", "contact"].forEach(function (k) {
       acts.push({ label: "Open " + ROOM_TITLES[k], kind: "room", run: function () {
-        if (state.room) closeRoom();
         openRoom(k, document.querySelector('[data-room="' + k + '"]'));
       } });
     });
     acts.push({ label: Music.isOn() ? "Pause ambient music" : "Play ambient music", kind: "sound", run: toggleMusic });
+    [["bells", "Bells"], ["night", "Night"], ["rain", "Rain"]].forEach(function (sc) {
+      acts.push({ label: "Soundscape — " + sc[1], kind: "sound", run: function () {
+        Music.setMode(sc[0]); toast("Soundscape: " + sc[1]);
+      } });
+    });
+    acts.push({ label: "Theme — follow system", kind: "theme", run: function () {
+      var sys = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+      setTheme(sys); try { localStorage.setItem("sdn-theme", "auto"); } catch (e) {}
+      toast("Following system theme");
+    }});
+    acts.push({ label: "Surprise me — open a random room", kind: "fun", run: function () {
+      var rooms = ["photos", "writing", "videos", "about", "college", "contact"];
+      openRoom(rooms[Math.floor(Math.random() * rooms.length)], document.querySelector('[data-room="' + rooms[0] + '"]'));
+    }});
+    acts.push({ label: "Keyboard shortcuts", kind: "help", run: function () { $("keys").classList.add("on"); } });
     acts.push({ label: "Light mode", kind: "theme", run: function () { setTheme("light"); toast("Light mode"); } });
     acts.push({ label: "Dark mode", kind: "theme", run: function () { setTheme("dark"); toast("Dark mode"); } });
     acts.push({ label: "Take a photo", kind: "camera", run: openCam });
@@ -1430,7 +1663,8 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
     return "none";
   }
   function openCam() {
-    if (state.room) closeRoom();
+    var already = $("cam").classList.contains("on");
+    if (!already) ovPush("cam");
     camShot = null;
     $("cam").classList.add("on");
     $("camStage").innerHTML = '<div class="cam__hint">Starting camera…</div>';
@@ -1454,7 +1688,7 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
         renderCamActions("fallback");
       });
   }
-  function closeCam() {
+  function closeCamView() {
     if (camStream) { camStream.getTracks().forEach(function (t) { t.stop(); }); camStream = null; }
     $("cam").classList.remove("on");
   }
@@ -1483,7 +1717,7 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
       box.innerHTML = '<button class="btn" id="camSnap" type="button">Capture</button>' +
         '<button class="cf" id="camClose" type="button" style="margin-left:auto">Close</button>';
       $("camSnap").addEventListener("click", capture);
-      $("camClose").addEventListener("click", closeCam);
+      $("camClose").addEventListener("click", function () { ovClose(); });
     } else if (mode === "fallback") {
       box.innerHTML = '<label class="btn" style="cursor:pointer">Choose a photo<input type="file" accept="image/*" id="camFile" style="display:none"></label>' +
         '<button class="cf" id="camClose" type="button" style="margin-left:auto">Close</button>';
@@ -1492,7 +1726,7 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
         var file = f.files && f.files[0]; if (!file) return;
         var r = new FileReader(); r.onload = function () { showShot(r.result); }; r.readAsDataURL(file);
       });
-      $("camClose").addEventListener("click", closeCam);
+      $("camClose").addEventListener("click", function () { ovClose(); });
     } else {
       box.innerHTML = '<button class="btn" id="camKeep" type="button">Save to my strip</button>' +
         '<button class="cf" id="camDl" type="button">Download</button>' +
@@ -1500,7 +1734,7 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
         '<button class="cf" id="camRetake" type="button" style="margin-left:auto">Retake</button>';
       $("camKeep").addEventListener("click", function () {
         if (!camShot) return;
-        saveSnap(camShot); toast("Saved to your strip"); renderSnaps(); closeCam();
+        saveSnap(camShot); toast("Saved to your strip"); renderSnaps(); ovClose();
       });
       $("camDl").addEventListener("click", function () { if (camShot) downloadBlob(dataUrlToBlob(camShot), "snapshot.jpg"); });
       $("camShare").addEventListener("click", function () { if (camShot) sharePhoto(camShot); });
@@ -1557,6 +1791,17 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
     });
   }
 
+  /* ══════════ READING LIST ══════════ */
+  function savedTitles() { try { return JSON.parse(localStorage.getItem("sdn-saved") || "[]"); } catch (e) { return []; } }
+  function isSaved(title) { return savedTitles().indexOf(title) >= 0; }
+  function toggleSaved(title) {
+    var a = savedTitles(), i = a.indexOf(title);
+    if (i >= 0) a.splice(i, 1); else a.push(title);
+    try { localStorage.setItem("sdn-saved", JSON.stringify(a)); } catch (e) {}
+    toast(i >= 0 ? "Removed from saved" : "Saved for later");
+    return i < 0;
+  }
+
   /* ══════════ CONTACT CARD + SHARE ══════════ */
   function makeVcard() {
     var s2 = state.c.site;
@@ -1599,13 +1844,17 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
       var row = palRows[palIndex]; if (row) { row.run(); if (row.kind !== "colour") palClose(); }
     } else if (e.key === "Escape") { palClose(); }
   });
-  $("cam").addEventListener("click", function (e) { if (e.target.id === "cam") closeCam(); });
+  $("cam").addEventListener("click", function (e) { if (e.target.id === "cam") ovClose(); });
+  $("keys").addEventListener("click", function (e) { if (e.target.id === "keys") $("keys").classList.remove("on"); });
 
   document.addEventListener("keydown", function (e) {
     var tag = (e.target.tagName || "").toLowerCase();
     var typing = tag === "input" || tag === "textarea" || e.target.isContentEditable;
     if ((e.metaKey || e.ctrlKey) && String(e.key).toLowerCase() === "k") { e.preventDefault(); palOpen(); return; }
     if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === "?" ) { $("keys").classList.toggle("on"); return; }
+    if (e.key === "m" || e.key === "M") { toggleMusic(); return; }
+    if (e.key === "t" || e.key === "T") { setTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark"); return; }
     var map = ["photos", "writing", "videos", "about", "college", "contact"];
     var n = parseInt(e.key, 10);
     if (n >= 1 && n <= 6 && !state.room && !$("pal").classList.contains("on")) {
