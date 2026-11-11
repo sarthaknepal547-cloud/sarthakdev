@@ -1,0 +1,15 @@
+{
+  "name": "Sarthak Dev Nepal",
+  "short_name": "Sarthak",
+  "description": "Photography, writing, and the things I'm building. From Bhaktapur, Nepal.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#07060A",
+  "theme_color": "#07060A",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

@@ -12,6 +12,8 @@
 <meta property="og:url" content="https://sarthakdev.com.np/">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://sarthakdev.com.np/">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.svg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23E8622C'/%3E%3Cstop offset='1' stop-color='%23F2B33D'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ctext x='50' y='74' font-family='Georgia,serif' font-size='66' font-weight='400' fill='%23FFF8F0' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
 <script>
 (function () {
@@ -481,6 +483,124 @@ form.cform { display: grid; gap: .75rem; }
 .reader__inner p { color: var(--muted); margin: 0 0 1rem; }
 .reader__close { float: right; }
 
+/* ══════════ TOOLBAR ══════════ */
+.tools { display: flex; align-items: center; gap: .45rem; }
+.clock {
+  font-size: .64rem; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--muted); font-variant-numeric: tabular-nums; margin-right: .2rem;
+}
+@media (max-width: 700px) { .clock { display: none; } }
+.toolbtn {
+  width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center;
+  border: 1px solid var(--line-2); background: transparent; cursor: pointer;
+  transition: all .3s var(--ease);
+}
+.toolbtn:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+.toolbtn svg { width: 16px; height: 16px; }
+.toolbtn.on { border-color: var(--accent); background: var(--card-glow); color: #fff; }
+.toolbtn.on svg { animation: eq 1.1s ease-in-out infinite alternate; }
+@keyframes eq { from { transform: scaleY(.8); } to { transform: scaleY(1.15); } }
+
+/* ══════════ TOAST ══════════ */
+.toast {
+  position: fixed; left: 50%; bottom: 1.4rem; transform: translate(-50%, 16px);
+  background: var(--surface-solid); border: 1px solid var(--line-2); color: var(--text);
+  padding: .7rem 1.15rem; border-radius: 12px; font-size: .84rem; z-index: 200;
+  opacity: 0; pointer-events: none; transition: all .35s var(--ease);
+  box-shadow: var(--shadow); max-width: 88vw; text-align: center;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* ══════════ COMMAND PALETTE ══════════ */
+.pal {
+  position: fixed; inset: 0; z-index: 150; display: none; padding: 12vh 1rem 1rem;
+  background: var(--scrim); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+}
+.pal.on { display: block; animation: overlayIn .28s var(--ease); }
+.pal__box {
+  max-width: 560px; margin: 0 auto; background: var(--surface-solid);
+  border: 1px solid var(--line-2); border-radius: 18px; overflow: hidden;
+  box-shadow: var(--shadow); animation: pop .35s var(--ease-out);
+}
+.pal__input {
+  width: 100%; padding: 1rem 1.2rem; background: transparent; border: 0;
+  border-bottom: 1px solid var(--line); color: var(--text); font: inherit; font-size: 1rem;
+}
+.pal__input:focus { outline: none; }
+.pal__list { max-height: 52vh; overflow-y: auto; padding: .5rem; }
+.pal__item {
+  display: flex; align-items: center; gap: .7rem; width: 100%; text-align: left;
+  padding: .65rem .8rem; border-radius: 11px; border: 0; background: transparent;
+  color: var(--text); cursor: pointer; font: inherit; font-size: .9rem;
+}
+.pal__item:hover, .pal__item.sel { background: var(--card-glow); }
+.pal__item small { margin-left: auto; color: var(--muted); font-size: .72rem; }
+.pal__empty { padding: 1.4rem; text-align: center; color: var(--muted); font-size: .85rem; }
+.pal__foot {
+  padding: .6rem 1rem; border-top: 1px solid var(--line);
+  font-size: .7rem; letter-spacing: .1em; color: var(--muted); display: flex; gap: 1rem;
+}
+
+/* ══════════ COLOUR SWATCHES ══════════ */
+.swatches { display: flex; gap: .5rem; flex-wrap: wrap; }
+.sw {
+  width: 30px; height: 30px; border-radius: 50%; cursor: pointer;
+  border: 2px solid transparent; transition: transform .25s, border-color .25s;
+}
+.sw:hover { transform: scale(1.14); }
+.sw.on { border-color: var(--text); transform: scale(1.14); }
+
+/* ══════════ CAMERA ══════════ */
+.cam {
+  position: fixed; inset: 0; z-index: 160; display: none; place-items: center;
+  padding: 1rem; background: var(--scrim);
+  -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+}
+.cam.on { display: grid; }
+.cam__box {
+  width: min(560px, 100%); background: var(--surface-solid); border: 1px solid var(--line-2);
+  border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); animation: pop .4s var(--ease-out);
+}
+.cam__stage { position: relative; background: #000; aspect-ratio: 4/3; display: grid; place-items: center; }
+.cam__stage video, .cam__stage img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cam__stage .cam__hint { color: #ccc; font-size: .85rem; padding: 2rem; text-align: center; }
+.cam__row { display: flex; gap: .5rem; align-items: center; padding: .8rem 1rem; flex-wrap: wrap; }
+.cam__filters { display: flex; gap: .4rem; padding: 0 1rem .8rem; flex-wrap: wrap; }
+.cf {
+  padding: .35rem .75rem; border-radius: 100px; border: 1px solid var(--line-2);
+  background: transparent; color: var(--muted); font-size: .74rem; cursor: pointer;
+}
+.cf.on { border-color: var(--accent); color: var(--accent); }
+.cam__note { font-size: .72rem; color: var(--muted); padding: 0 1rem 1rem; margin: 0; line-height: 1.5; }
+
+/* ══════════ SNAPSHOT STRIP ══════════ */
+.snaps { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: .6rem; margin-top: .8rem; }
+.snap { position: relative; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); aspect-ratio: 1; }
+.snap img { width: 100%; height: 100%; object-fit: cover; }
+.snap button {
+  position: absolute; top: 4px; right: 4px; width: 22px; height: 22px; border-radius: 50%;
+  border: 0; background: rgba(0,0,0,.6); color: #fff; cursor: pointer; font-size: .7rem; line-height: 1;
+}
+
+/* ══════════ MISC ══════════ */
+.barbtn {
+  display: inline-flex; align-items: center; gap: .4rem; margin-left: .4rem;
+  border: 1px solid var(--line-2); background: transparent; cursor: pointer;
+  padding: .5rem .85rem; border-radius: 100px; font-size: .78rem; color: var(--muted);
+  transition: all .3s var(--ease);
+}
+.barbtn:hover { border-color: var(--accent); color: var(--accent); }
+.reader__prog { position: sticky; top: 0; height: 2px; background: var(--accent); width: 0; transition: width .1s linear; }
+.install {
+  position: fixed; right: 1rem; bottom: 1rem; z-index: 120; display: none; align-items: center; gap: .6rem;
+  padding: .7rem 1rem; border-radius: 100px; background: var(--surface-solid);
+  border: 1px solid var(--line-2); box-shadow: var(--shadow); font-size: .82rem;
+}
+.install.show { display: flex; }
+html.lite #field, html.lite .spot, html.lite .grain { display: none; }
+html.lite .aurora { opacity: .45; filter: blur(60px); }
+html.lite .tile, html.lite .panel { -webkit-backdrop-filter: none; backdrop-filter: none; }
+
 /* ══════════ A11Y / MOTION ══════════ */
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) {
@@ -503,6 +623,11 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
     <span class="pip" aria-hidden="true"></span>
     <b>Sarthak</b>
     <span class="brand__loc" id="brandLoc">Bhaktapur</span>
+  </div>
+  <div class="tools">
+    <span class="clock" id="clock" aria-hidden="true">--:-- NPT</span>
+    <button class="toolbtn" id="musicBtn" type="button" aria-label="Ambient music on or off" title="Ambient music" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M9 18V5l10-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/></svg></button>
+    <button class="toolbtn" id="palBtn" type="button" aria-label="Search and commands" title="Search &amp; commands"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
   </div>
   <button class="iconbtn" id="themeToggle" type="button" aria-label="Toggle light and dark" title="Light / dark">
     <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
@@ -536,6 +661,7 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
       <button class="back" id="backBtn" type="button">← Back</button>
       <h2 class="room__title" id="roomTitle">Room</h2>
       <span class="room__count" id="roomCount"></span>
+      <button class="barbtn" id="shareBtn" type="button">Share ↗</button>
     </div>
     <div class="room__scroll" id="roomScroll"><div class="room__wrap" id="roomBody"></div></div>
   </div>
@@ -550,6 +676,7 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
 </div>
 
 <div class="reader" id="reader" role="dialog" aria-modal="true" aria-labelledby="readerTitle">
+  <div class="reader__prog" id="readerProg"></div>
   <div class="reader__inner">
     <button class="ov-btn reader__close" id="readerClose" aria-label="Close">&times;</button>
     <span class="post-card__date" id="readerDate"></span>
@@ -557,6 +684,29 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
     <div id="readerBody"></div>
   </div>
 </div>
+
+<div class="pal" id="pal" role="dialog" aria-modal="true" aria-label="Search and commands">
+  <div class="pal__box">
+    <input class="pal__input" id="palInput" type="text" placeholder="Search, jump to a room, change a setting…" autocomplete="off" spellcheck="false">
+    <div style="padding:.7rem 1rem;border-bottom:1px solid var(--line)">
+      <div class="swatches" id="palSwatches"></div>
+    </div>
+    <div class="pal__list" id="palList"></div>
+    <div class="pal__foot"><span>↑↓ move</span><span>↵ open</span><span>esc close</span></div>
+  </div>
+</div>
+
+<div class="cam" id="cam" role="dialog" aria-modal="true" aria-label="Take a photo">
+  <div class="cam__box">
+    <div class="cam__stage" id="camStage"><div class="cam__hint" id="camHint">Starting camera…</div></div>
+    <div class="cam__filters" id="camFilters"></div>
+    <div class="cam__row" id="camActions"></div>
+    <p class="cam__note">Photos you take here stay in <strong>your</strong> browser — they are not uploaded or shown to anyone else. Use Download or Share to keep one.</p>
+  </div>
+</div>
+
+<div class="install" id="install"><span>Install this site</span><button class="btn" id="installBtn" style="padding:.45rem .9rem;font-size:.78rem">Install</button></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 (function () {
@@ -574,12 +724,7 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
 
   /* ══════════ theme ══════════ */
   $("themeToggle").addEventListener("click", function () {
-    var next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-    document.documentElement.dataset.theme = next;
-    try { localStorage.setItem("sdn-theme", next); } catch (e) {}
-    var m = document.querySelector('meta[name="theme-color"]');
-    if (m) m.setAttribute("content", next === "dark" ? "#07060A" : "#EBE4D8");
-    bootField();
+    setTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
   });
 
   /* ══════════ particle field ══════════ */
@@ -714,7 +859,7 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
       html += '<span style="--i:' + (i++) + '">' + esc(ch) + "</span>";
     });
     $("nameTitle").innerHTML = html;
-    $("hint").textContent = TILES.length + " rooms — pick one";
+    tick();
 
     var thumb = state.posts.find(function (p) { return p.image; });
     var tiles = TILES.map(function (t, idx) {
@@ -834,6 +979,12 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
             (p.caption ? "<figcaption>" + esc(p.caption) + "</figcaption>" : "") + "</figure>";
         }).join("") + "</div>";
       }
+      body += '<div class="panel" style="margin-top:1.5rem"' + rise(9) + ">" +
+        '<p class="kicker">On your device</p>' +
+        '<h3 style="font-family:var(--font-display);font-weight:400;font-size:1.55rem;margin:0 0 .4rem">Take a photo</h3>' +
+        '<p class="lede" style="margin-bottom:1rem">Use your camera right here, add a filter, then download or share it. Snapshots are kept in this browser only — they never leave your device.</p>' +
+        '<button class="btn" type="button" id="camOpen">Open camera</button>' +
+        '<div class="snaps" id="snaps"></div></div>';
     }
 
     if (key === "writing") {
@@ -848,7 +999,7 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
               : '<div class="post-card__media"><span>' + esc(p.title.charAt(0)) + "</span></div>";
             return '<button class="post-card" type="button" data-post="' + n + '"' + rise(n + 1) + ">" + media +
               '<div class="post-card__body">' +
-              (p.date ? '<span class="post-card__date">' + esc(p.date) + "</span>" : "") +
+              '<span class="post-card__date">' + (p.date ? esc(p.date) + " · " : "") + readTime(p.body || p.excerpt) + "</span>" +
               '<h3 class="post-card__title">' + esc(p.title) + "</h3>" +
               (p.excerpt ? '<p class="post-card__excerpt">' + esc(p.excerpt) + "</p>" : "") +
               '<span class="post-card__more">Read →</span></div></button>';
@@ -936,6 +1087,7 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
       ) : "";
       body = '<div class="contact-grid">' +
         '<div class="panel"' + rise(0) + '><div>' + rows + "</div>" +
+          '<button class="btn" type="button" id="vcardBtn" style="margin-top:1.1rem">Save contact</button>' +
           (socials ? '<div class="socials">' + socials + "</div>" : "") +
           (s.mapEmbed ? '<div class="map-frame"><iframe src="' + esc(s.mapEmbed) + '" loading="lazy" title="Map" referrerpolicy="no-referrer-when-downgrade"></iframe></div>' : "") +
         "</div>" +
@@ -947,6 +1099,11 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
   }
 
   function wireRoom(key) {
+    var camOpen = $("camOpen");
+    if (camOpen) camOpen.addEventListener("click", openCam);
+    if ($("snaps")) renderSnaps();
+    var vc = $("vcardBtn");
+    if (vc) vc.addEventListener("click", makeVcard);
     $("roomBody").querySelectorAll("[data-photo]").forEach(function (f) {
       f.addEventListener("click", function () { openLightbox(Number(f.dataset.photo)); });
     });
@@ -985,7 +1142,8 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
 
   function openReader(n) {
     var p = state.posts[n]; if (!p) return;
-    $("readerDate").textContent = p.date || "";
+    $("readerDate").textContent = (p.date ? p.date + " · " : "") + readTime(p.body || p.excerpt);
+    var prog = $("readerProg"); if (prog) prog.style.width = "0%";
     $("readerTitle").textContent = p.title || "";
     var text = p.body || p.excerpt || "";
     $("readerBody").innerHTML = text.split(/\n{2,}/).map(function (x) { return "<p>" + esc(x) + "</p>"; }).join("");
@@ -1026,6 +1184,467 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
       st.style.transform = "rotateX(" + (-pointer.ty * 2.2) + "deg) rotateY(" + (pointer.tx * 2.2) + "deg)";
     }
   }, { passive: true });
+
+  /* ══════════ TOAST + UTIL ══════════ */
+  var toastTimer = null;
+  function toast(msg) {
+    var t = $("toast"); if (!t) return;
+    t.textContent = msg; t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.classList.remove("show"); }, 2800);
+  }
+  function copyText(txt) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(function () { toast("Copied to clipboard"); })
+        .catch(function () { toast("Couldn't copy — long-press to select"); });
+    } else { toast("Copying isn't supported here"); }
+  }
+  function downloadBlob(blob, name) {
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+  }
+  function dataUrlToBlob(dataUrl) {
+    var parts = dataUrl.split(","), mime = parts[0].match(/:(.*?);/)[1];
+    var bin = atob(parts[1]), arr = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    return new Blob([arr], { type: mime });
+  }
+  function readTime(text) {
+    var words = String(text || "").trim().split(/\s+/).filter(Boolean).length;
+    return Math.max(1, Math.round(words / 200)) + " min read";
+  }
+
+  /* ══════════ ACCENT COLOURS (visitor choice) ══════════ */
+  var ACCENTS = [
+    { key: "ember",  dark: "#E8622C", light: "#BE3A0A" },
+    { key: "gold",   dark: "#F2B33D", light: "#96600A" },
+    { key: "teal",   dark: "#2FBF9E", light: "#0E7A62" },
+    { key: "violet", dark: "#8B7CFF", light: "#4A3FD4" },
+    { key: "rose",   dark: "#FF6B9A", light: "#C1185B" },
+    { key: "azure",  dark: "#4E9BFF", light: "#1554B8" }
+  ];
+  function storedAccent() {
+    try { return localStorage.getItem("sdn-accent") || "ember"; } catch (e) { return "ember"; }
+  }
+  function applyAccent(key) {
+    var picked = null;
+    for (var i = 0; i < ACCENTS.length; i++) if (ACCENTS[i].key === key) picked = ACCENTS[i];
+    if (!picked) picked = ACCENTS[0];
+    var light = document.documentElement.dataset.theme === "light";
+    var v = light ? picked.light : picked.dark;
+    document.documentElement.style.setProperty("--accent", v);
+    document.documentElement.style.setProperty("--card-glow", v + (light ? "2E" : "4D"));
+    try { localStorage.setItem("sdn-accent", picked.key); } catch (e) {}
+    var box = $("palSwatches");
+    if (box) box.querySelectorAll(".sw").forEach(function (x) {
+      x.classList.toggle("on", x.dataset.acc === picked.key);
+    });
+  }
+  function setTheme(next) {
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem("sdn-theme", next); } catch (e) {}
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute("content", next === "dark" ? "#07060A" : "#EBE4D8");
+    applyAccent(storedAccent());
+    bootField();
+  }
+
+  /* ══════════ AMBIENT MUSIC (generated, no audio files) ══════════ */
+  var Music = (function () {
+    var ctx = null, master = null, on = false, vol = 0.3, bellTimer = null, built = false;
+    function build() {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return false;
+      ctx = new AC();
+      master = ctx.createGain();
+      master.gain.value = 0;
+      master.connect(ctx.destination);
+      var base = 196;
+      [0.5, 0.75, 1].forEach(function (m, i) {
+        var o = ctx.createOscillator(), g = ctx.createGain(), lp = ctx.createBiquadFilter();
+        o.type = i === 2 ? "triangle" : "sine";
+        o.frequency.value = base * m;
+        o.detune.value = (i - 1) * 8;
+        lp.type = "lowpass"; lp.frequency.value = 780 + i * 240; lp.Q.value = 0.7;
+        g.gain.value = 0.075 / (i + 1);
+        o.connect(lp); lp.connect(g); g.connect(master); o.start();
+        var lfo = ctx.createOscillator(), lg = ctx.createGain();
+        lfo.frequency.value = 0.024 + i * 0.017; lg.gain.value = 250;
+        lfo.connect(lg); lg.connect(lp.frequency); lfo.start();
+      });
+      built = true;
+      return true;
+    }
+    function bell() {
+      if (!ctx || !on) return;
+      var t = ctx.currentTime;
+      var steps = [0, 2, 4, 7, 9, 12, 14, 16, 19];
+      var f = 392 * Math.pow(2, steps[Math.floor(Math.random() * steps.length)] / 12);
+      var o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.linearRampToValueAtTime(0.085, t + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 3.4);
+      o.connect(g); g.connect(master);
+      o.start(t); o.stop(t + 3.6);
+    }
+    return {
+      toggle: function () {
+        if (!built && !build()) { toast("Audio isn't available in this browser"); return false; }
+        if (ctx.state === "suspended") ctx.resume();
+        on = !on;
+        master.gain.cancelScheduledValues(ctx.currentTime);
+        master.gain.linearRampToValueAtTime(on ? vol : 0, ctx.currentTime + 0.7);
+        if (on) {
+          bell();
+          clearInterval(bellTimer);
+          bellTimer = setInterval(function () { if (Math.random() < 0.8) bell(); }, 2500);
+        } else { clearInterval(bellTimer); bellTimer = null; }
+        try { localStorage.setItem("sdn-music", on ? "1" : "0"); } catch (e) {}
+        return on;
+      },
+      isOn: function () { return on; },
+      setVolume: function (v) {
+        vol = Math.max(0, Math.min(1, v));
+        if (on && master) master.gain.setTargetAtTime(vol, ctx.currentTime, 0.15);
+      },
+      volume: function () { return vol; }
+    };
+  })();
+
+  function toggleMusic() {
+    var playing = Music.toggle();
+    var btn = $("musicBtn");
+    if (btn) { btn.classList.toggle("on", playing); btn.setAttribute("aria-pressed", playing ? "true" : "false"); }
+    toast(playing ? "Ambient music on" : "Music paused");
+  }
+
+  /* ══════════ CLOCK + GREETING (Asia/Kathmandu) ══════════ */
+  function kathmanduHour() {
+    try {
+      return Number(new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Kathmandu", hour: "2-digit", hour12: false }).format(new Date()));
+    } catch (e) { return new Date().getHours(); }
+  }
+  function tick() {
+    var el = $("clock");
+    try {
+      if (el) el.textContent = new Intl.DateTimeFormat("en-GB", {
+        timeZone: "Asia/Kathmandu", hour: "2-digit", minute: "2-digit", hour12: false
+      }).format(new Date()) + " NPT";
+    } catch (e) { if (el) el.textContent = ""; }
+    var h = kathmanduHour();
+    var g = h < 5 ? "Still up?" : h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : h < 21 ? "Good evening" : "Good night";
+    var hint = $("hint");
+    if (hint && !state.room) hint.textContent = g + " — pick a room";
+  }
+
+  /* ══════════ COMMAND PALETTE + SEARCH ══════════ */
+  var palRows = [], palIndex = 0;
+  function palActions() {
+    var acts = [];
+    ["photos", "writing", "videos", "about", "college", "contact"].forEach(function (k) {
+      acts.push({ label: "Open " + ROOM_TITLES[k], kind: "room", run: function () {
+        if (state.room) closeRoom();
+        openRoom(k, document.querySelector('[data-room="' + k + '"]'));
+      } });
+    });
+    acts.push({ label: Music.isOn() ? "Pause ambient music" : "Play ambient music", kind: "sound", run: toggleMusic });
+    acts.push({ label: "Light mode", kind: "theme", run: function () { setTheme("light"); toast("Light mode"); } });
+    acts.push({ label: "Dark mode", kind: "theme", run: function () { setTheme("dark"); toast("Dark mode"); } });
+    acts.push({ label: "Take a photo", kind: "camera", run: openCam });
+    acts.push({ label: "Copy link to this page", kind: "share", run: function () { copyText(location.href); } });
+    acts.push({ label: "Download contact card (.vcf)", kind: "contact", run: makeVcard });
+    acts.push({
+      label: (document.documentElement.classList.contains("lite") ? "Turn off" : "Turn on") + " data saver",
+      kind: "perf", run: function () { setLite(!document.documentElement.classList.contains("lite")); }
+    });
+    return acts;
+  }
+  function palOpen() {
+    $("pal").classList.add("on");
+    $("palInput").value = "";
+    var sw = $("palSwatches");
+    if (sw && !sw.children.length) {
+      sw.innerHTML = ACCENTS.map(function (a) {
+        return '<button class="sw" type="button" data-acc="' + a.key + '" title="' + a.key + '" style="background:' + a.dark + '"></button>';
+      }).join("");
+      sw.querySelectorAll(".sw").forEach(function (b) {
+        b.addEventListener("click", function () { applyAccent(b.dataset.acc); toast("Accent: " + b.dataset.acc); });
+      });
+    }
+    applyAccent(storedAccent());
+    palRender("");
+    setTimeout(function () { $("palInput").focus(); }, 40);
+  }
+  function palClose() { $("pal").classList.remove("on"); }
+  function palRender(q) {
+    q = (q || "").trim().toLowerCase();
+    var rows = [];
+    palActions().forEach(function (a) {
+      if (!q || a.label.toLowerCase().indexOf(q) >= 0) rows.push({ label: a.label, kind: a.kind, run: a.run });
+    });
+    state.posts.forEach(function (p, i) {
+      if (q && (p.title + " " + p.excerpt).toLowerCase().indexOf(q) >= 0) {
+        rows.push({ label: "Read: " + p.title, kind: "post", run: function () { palClose(); openReader(i); } });
+      }
+    });
+    ACCENTS.forEach(function (a) {
+      var match = !q || ("accent colour " + a.key).indexOf(q) >= 0;
+      if (match) rows.push({ label: "Accent — " + a.key, kind: "colour", swatch: a.dark, run: function () { applyAccent(a.key); palRender($("palInput").value); toast("Accent: " + a.key); } });
+    });
+    palRows = rows.slice(0, 40);
+    palIndex = 0;
+    var list = $("palList");
+    if (!palRows.length) { list.innerHTML = '<div class="pal__empty">Nothing matches “' + esc(q) + '”</div>'; return; }
+    list.innerHTML = palRows.map(function (r, i) {
+      var sw = r.swatch ? '<span class="sw" style="background:' + r.swatch + ';width:14px;height:14px;border:0"></span>' : "";
+      return '<button class="pal__item' + (i === 0 ? " sel" : "") + '" data-i="' + i + '" type="button">' + sw +
+        '<span>' + esc(r.label) + "</span><small>" + esc(r.kind) + "</small></button>";
+    }).join("");
+    list.querySelectorAll(".pal__item").forEach(function (b) {
+      b.addEventListener("click", function () { palRows[Number(b.dataset.i)].run(); if (b.dataset.i) palClose(); });
+    });
+  }
+  function palMove(dir) {
+    var items = $("palList").querySelectorAll(".pal__item");
+    if (!items.length) return;
+    items[palIndex] && items[palIndex].classList.remove("sel");
+    palIndex = (palIndex + dir + items.length) % items.length;
+    items[palIndex].classList.add("sel");
+    items[palIndex].scrollIntoView({ block: "nearest" });
+  }
+
+  /* ══════════ CAMERA + LOCAL SNAPSHOTS ══════════ */
+  var camStream = null, camFilter = "none", camShot = null;
+  var FILTERS = [
+    { key: "none",  label: "Original", css: "none" },
+    { key: "warm",  label: "Warm",     css: "sepia(.32) saturate(1.35) brightness(1.05)" },
+    { key: "mono",  label: "Mono",     css: "grayscale(1) contrast(1.12)" },
+    { key: "vivid", label: "Vivid",    css: "saturate(1.65) contrast(1.08)" },
+    { key: "cool",  label: "Cool",     css: "hue-rotate(-14deg) saturate(1.2) brightness(1.04)" }
+  ];
+  function filterCss(key) {
+    for (var i = 0; i < FILTERS.length; i++) if (FILTERS[i].key === key) return FILTERS[i].css;
+    return "none";
+  }
+  function openCam() {
+    if (state.room) closeRoom();
+    camShot = null;
+    $("cam").classList.add("on");
+    $("camStage").innerHTML = '<div class="cam__hint">Starting camera…</div>';
+    renderCamFilters();
+    renderCamActions("live");
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      $("camStage").innerHTML = '<div class="cam__hint">No camera access in this browser. You can still upload a file.</div>';
+      renderCamActions("fallback");
+      return;
+    }
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: "user", width: { ideal: 1280 } }, audio: false })
+      .then(function (stream) {
+        camStream = stream;
+        $("camStage").innerHTML = '<video id="camVideo" autoplay playsinline muted></video>';
+        var v = $("camVideo");
+        v.srcObject = stream;
+        v.style.filter = filterCss(camFilter);
+      })
+      .catch(function () {
+        $("camStage").innerHTML = '<div class="cam__hint">Camera blocked or unavailable. You can upload a photo instead.</div>';
+        renderCamActions("fallback");
+      });
+  }
+  function closeCam() {
+    if (camStream) { camStream.getTracks().forEach(function (t) { t.stop(); }); camStream = null; }
+    $("cam").classList.remove("on");
+  }
+  function renderCamFilters() {
+    $("camFilters").innerHTML = FILTERS.map(function (f) {
+      return '<button class="cf' + (f.key === camFilter ? " on" : "") + '" data-f="' + f.key + '" type="button">' + f.label + "</button>";
+    }).join("") + '<label class="cf" style="cursor:pointer">Upload<input type="file" accept="image/*" id="camUpload" style="display:none"></label>';
+    $("camFilters").querySelectorAll(".cf[data-f]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        camFilter = b.dataset.f;
+        var v = $("camVideo"); if (v) v.style.filter = filterCss(camFilter);
+        renderCamFilters();
+      });
+    });
+    var up = $("camUpload");
+    if (up) up.addEventListener("change", function () {
+      var f = up.files && up.files[0]; if (!f) return;
+      var r = new FileReader();
+      r.onload = function () { showShot(r.result); };
+      r.readAsDataURL(f);
+    });
+  }
+  function renderCamActions(mode) {
+    var box = $("camActions");
+    if (mode === "live") {
+      box.innerHTML = '<button class="btn" id="camSnap" type="button">Capture</button>' +
+        '<button class="cf" id="camClose" type="button" style="margin-left:auto">Close</button>';
+      $("camSnap").addEventListener("click", capture);
+      $("camClose").addEventListener("click", closeCam);
+    } else if (mode === "fallback") {
+      box.innerHTML = '<label class="btn" style="cursor:pointer">Choose a photo<input type="file" accept="image/*" id="camFile" style="display:none"></label>' +
+        '<button class="cf" id="camClose" type="button" style="margin-left:auto">Close</button>';
+      var f = $("camFile");
+      if (f) f.addEventListener("change", function () {
+        var file = f.files && f.files[0]; if (!file) return;
+        var r = new FileReader(); r.onload = function () { showShot(r.result); }; r.readAsDataURL(file);
+      });
+      $("camClose").addEventListener("click", closeCam);
+    } else {
+      box.innerHTML = '<button class="btn" id="camKeep" type="button">Save to my strip</button>' +
+        '<button class="cf" id="camDl" type="button">Download</button>' +
+        '<button class="cf" id="camShare" type="button">Share</button>' +
+        '<button class="cf" id="camRetake" type="button" style="margin-left:auto">Retake</button>';
+      $("camKeep").addEventListener("click", function () {
+        if (!camShot) return;
+        saveSnap(camShot); toast("Saved to your strip"); renderSnaps(); closeCam();
+      });
+      $("camDl").addEventListener("click", function () { if (camShot) downloadBlob(dataUrlToBlob(camShot), "snapshot.jpg"); });
+      $("camShare").addEventListener("click", function () { if (camShot) sharePhoto(camShot); });
+      $("camRetake").addEventListener("click", function () { openCam(); });
+    }
+  }
+  function capture() {
+    var v = $("camVideo"); if (!v || !v.videoWidth) { toast("Camera not ready yet"); return; }
+    var canvas = document.createElement("canvas");
+    var scale = Math.min(1, 900 / Math.max(v.videoWidth, v.videoHeight));
+    canvas.width = Math.round(v.videoWidth * scale);
+    canvas.height = Math.round(v.videoHeight * scale);
+    var cx = canvas.getContext("2d");
+    if (filterCss(camFilter) !== "none") cx.filter = filterCss(camFilter);
+    cx.drawImage(v, 0, 0, canvas.width, canvas.height);
+    showShot(canvas.toDataURL("image/jpeg", 0.85));
+  }
+  function showShot(dataUrl) {
+    camShot = dataUrl;
+    $("camStage").innerHTML = '<img alt="Your snapshot" style="filter:' + filterCss(camFilter) + '">';
+    $("camStage").querySelector("img").src = dataUrl;
+    renderCamActions("shot");
+  }
+  function sharePhoto(dataUrl) {
+    try {
+      var file = new File([dataUrlToBlob(dataUrl)], "snapshot.jpg", { type: "image/jpeg" });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        navigator.share({ files: [file], title: "A photo from sarthakdev.com.np" }).catch(function () {});
+        return;
+      }
+    } catch (e) {}
+    downloadBlob(dataUrlToBlob(dataUrl), "snapshot.jpg");
+    toast("Downloaded instead");
+  }
+  function getSnaps() { try { return JSON.parse(localStorage.getItem("sdn-snaps") || "[]"); } catch (e) { return []; } }
+  function saveSnap(src) {
+    var a = getSnaps();
+    a.unshift({ src: src, ts: Date.now() });
+    a = a.slice(0, 6);
+    try { localStorage.setItem("sdn-snaps", JSON.stringify(a)); } catch (e) { toast("Storage full — remove an old snapshot"); }
+  }
+  function renderSnaps() {
+    var box = $("snaps"); if (!box) return;
+    var items = getSnaps();
+    box.innerHTML = items.length ? items.map(function (s, i) {
+      return '<div class="snap"><img src="' + s.src + '" alt="Your snapshot"><button type="button" data-del="' + i + '" aria-label="Remove">&times;</button></div>';
+    }).join("") : "";
+    box.querySelectorAll("[data-del]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var a = getSnaps(); a.splice(Number(b.dataset.del), 1);
+        try { localStorage.setItem("sdn-snaps", JSON.stringify(a)); } catch (e) {}
+        renderSnaps();
+      });
+    });
+  }
+
+  /* ══════════ CONTACT CARD + SHARE ══════════ */
+  function makeVcard() {
+    var s2 = state.c.site;
+    var v = ["BEGIN:VCARD", "VERSION:3.0", "FN:" + s2.name,
+      "TEL;TYPE=CELL:" + (s2.phoneRaw || s2.phone || ""),
+      "EMAIL:" + (s2.email || ""),
+      "URL:https://sarthakdev.com.np",
+      "ADR;TYPE=HOME:;;" + (s2.location || "") + ";;;;",
+      "END:VCARD"].join("\r\n");
+    downloadBlob(new Blob([v], { type: "text/vcard" }), "sarthak-dev-nepal.vcf");
+    toast("Contact card downloaded");
+  }
+  function shareRoom() {
+    var url = location.origin + location.pathname + (state.room ? "#/" + state.room : "");
+    if (navigator.share) {
+      navigator.share({ title: document.title, url: url }).catch(function () {});
+    } else { copyText(url); }
+  }
+
+  /* ══════════ DATA SAVER ══════════ */
+  function setLite(on) {
+    document.documentElement.classList.toggle("lite", on);
+    try { localStorage.setItem("sdn-lite", on ? "1" : "0"); } catch (e) {}
+    if (on) { if (raf) { cancelAnimationFrame(raf); raf = null; } }
+    else if (!reduceMotion && !raf) loop();
+    toast(on ? "Data saver on" : "Data saver off");
+  }
+
+  /* ══════════ WIRING ══════════ */
+  $("musicBtn").addEventListener("click", toggleMusic);
+  $("palBtn").addEventListener("click", palOpen);
+  $("shareBtn").addEventListener("click", shareRoom);
+  $("pal").addEventListener("click", function (e) { if (e.target.id === "pal") palClose(); });
+  $("palInput").addEventListener("input", function (e) { palRender(e.target.value); });
+  $("palInput").addEventListener("keydown", function (e) {
+    if (e.key === "ArrowDown") { e.preventDefault(); palMove(1); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); palMove(-1); }
+    else if (e.key === "Enter") {
+      e.preventDefault();
+      var row = palRows[palIndex]; if (row) { row.run(); if (row.kind !== "colour") palClose(); }
+    } else if (e.key === "Escape") { palClose(); }
+  });
+  $("cam").addEventListener("click", function (e) { if (e.target.id === "cam") closeCam(); });
+
+  document.addEventListener("keydown", function (e) {
+    var tag = (e.target.tagName || "").toLowerCase();
+    var typing = tag === "input" || tag === "textarea" || e.target.isContentEditable;
+    if ((e.metaKey || e.ctrlKey) && String(e.key).toLowerCase() === "k") { e.preventDefault(); palOpen(); return; }
+    if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
+    var map = ["photos", "writing", "videos", "about", "college", "contact"];
+    var n = parseInt(e.key, 10);
+    if (n >= 1 && n <= 6 && !state.room && !$("pal").classList.contains("on")) {
+      openRoom(map[n - 1], document.querySelector('[data-room="' + map[n - 1] + '"]'));
+    }
+  });
+
+  var readerEl = $("reader");
+  readerEl.addEventListener("scroll", function () {
+    var max = readerEl.scrollHeight - readerEl.clientHeight;
+    var p = max > 0 ? (readerEl.scrollTop / max) * 100 : 0;
+    var bar = $("readerProg"); if (bar) bar.style.width = p + "%";
+  }, { passive: true });
+
+  setInterval(tick, 30000);
+
+  if ("serviceWorker" in navigator && location.protocol === "https:") {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("sw.js").catch(function () {});
+    });
+  }
+
+  /* install prompt */
+  var deferredInstall = null;
+  window.addEventListener("beforeinstallprompt", function (e) {
+    e.preventDefault(); deferredInstall = e;
+    $("install").classList.add("show");
+  });
+  $("installBtn").addEventListener("click", function () {
+    if (!deferredInstall) return;
+    deferredInstall.prompt();
+    deferredInstall = null;
+    $("install").classList.remove("show");
+  });
+
+  try {
+    if (localStorage.getItem("sdn-lite") === "1") document.documentElement.classList.add("lite");
+  } catch (e) {}
+  applyAccent(storedAccent());
 
   /* ══════════ boot ══════════ */
   function render(c) {
