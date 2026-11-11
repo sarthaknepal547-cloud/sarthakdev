@@ -1,5 +1,5 @@
 /* Service worker: app-shell cache so the site opens offline. */
-var CACHE = "sdn-v1";
+var CACHE = "sdn-v2";
 var SHELL = ["/", "/index.html", "/manifest.json", "/icon.svg", "/content.json"];
 
 self.addEventListener("install", function (e) {
@@ -28,16 +28,24 @@ self.addEventListener("fetch", function (e) {
   var url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
 
+  /* the editor must never be served from cache, or updates go missing */
+  if (/admin\.html$|admin\.webmanifest$/.test(url.pathname)) {
+    e.respondWith(fetch(req, { cache: "no-store" }));
+    return;
+  }
+
   var isContent = url.pathname === "/" || /index\.html$|content\.json$/.test(url.pathname);
 
   if (isContent) {
-    /* network first, fall back to cache when offline */
+    /* network first, fall back to cache when offline.
+       Pages adds ?v= cache-busting stamps, so store under the bare path. */
+    var key = url.origin + url.pathname;
     e.respondWith(
-      fetch(req).then(function (res) {
+      fetch(req, { cache: "no-store" }).then(function (res) {
         var copy = res.clone();
-        caches.open(CACHE).then(function (c) { c.put(req, copy); });
+        caches.open(CACHE).then(function (c) { c.put(key, copy); });
         return res;
-      }).catch(function () { return caches.match(req); })
+      }).catch(function () { return caches.match(key).then(function (hit) { return hit || caches.match(req); }); })
     );
   } else {
     e.respondWith(

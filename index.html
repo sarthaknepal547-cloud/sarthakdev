@@ -120,6 +120,10 @@ html[data-theme="light"] .vignette { background: radial-gradient(ellipse at 50% 
   color: #FFF8F0; font-family: var(--font-display); font-size: 1.08rem;
   box-shadow: 0 8px 22px var(--card-glow);
 }
+.brand__mark--img { background: none; padding: 0; overflow: hidden; }
+.brand__mark--img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.chips a.chip { text-decoration: none; color: var(--text); }
+.chips a.chip:hover { border-color: var(--accent); color: var(--accent); }
 .brand__name {
   font-family: var(--font-display); font-size: 1.16rem; letter-spacing: .01em;
   color: var(--text); line-height: 1; white-space: nowrap;
@@ -709,7 +713,7 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
 
 <div class="topbar">
   <div class="brand">
-    <span class="brand__mark" aria-hidden="true">S</span>
+    <span class="brand__mark" id="brandMark" aria-hidden="true">S</span>
     <span class="brand__name" id="brandName">Sarthak</span>
     <span class="brand__loc" id="brandLoc">Bhaktapur</span>
   </div>
@@ -954,6 +958,17 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
     $("eyebrow").textContent = c.hero.eyebrow || "Bhaktapur · Nepal";
     $("subTitle").textContent = c.hero.subtitle || "";
     $("brandLoc").textContent = (c.site.location || "Bhaktapur").split(",").pop().trim();
+    if ($("brandName")) $("brandName").textContent = c.site.brandName || "Sarthak";
+    var markEl = $("brandMark");
+    if (markEl) {
+      if (c.site.logoUrl) {
+        markEl.innerHTML = '<img src="' + esc(c.site.logoUrl) + '" alt="">';
+        markEl.classList.add("brand__mark--img");
+      } else {
+        markEl.textContent = (c.site.logoLetter || "S").slice(0, 2);
+        markEl.classList.remove("brand__mark--img");
+      }
+    }
 
     /* letter-split the name for a staggered 3D entrance */
     var name = c.hero.title || c.site.name;
@@ -1195,6 +1210,15 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
           (c.about.photo ? '<img src="' + esc(c.about.photo) + '" alt="" style="border-radius:14px;margin-bottom:1rem">' : "") +
           '<dl class="facts">' + facts + "</dl></aside>" +
       "</div>";
+
+      var files = (c.files || []).filter(function (f) { return f && f.url; });
+      if (files.length) {
+        body += '<div class="panel" style="margin-top:1.2rem"' + rise(2) + ">" +
+          '<p class="kicker">Downloads</p><div class="chips">' +
+          files.map(function (f) {
+            return '<a class="chip" href="' + esc(f.url) + '" download rel="noopener">' + esc(f.label || "File") + " &darr;</a>";
+          }).join("") + "</div></div>";
+      }
     }
 
     if (key === "college") {
@@ -1908,7 +1932,8 @@ noscript .wrap { padding: 6rem 2rem; max-width: 640px; margin: 0 auto; }
 
   bootField();
 
-  fetch("content.json", { cache: "no-store" })
+  /* the ?v= stamp defeats the Pages CDN cache so a publish shows up in seconds */
+  fetch("content.json?v=" + Date.now(), { cache: "no-store" })
     .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
     .then(function (c) {
       render(c);

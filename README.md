@@ -105,23 +105,54 @@ or start a conversation in [Discussions](../../discussions).
 
 ---
 
-## Editing the site (owner only)
+## Editing the site (owner only) — Studio
 
-The site's text, photos, posts and links live in **`content.json`** — not in the HTML. That
-means you can change anything without touching code.
+**https://sarthakdev.com.np/admin.html** is *Studio*: a private, mobile-first editor.
+Photos, songs, video clips, files, posts and all the text can be changed from a phone —
+no laptop, no GitHub website, no Cloudflare.
 
-1. Open **https://sarthakdev.com.np/admin.html**
-2. Paste your GitHub token once (fine-grained, `Contents: Read and write` on this repo)
-3. Edit in the left panel — the real page updates live on the right
-4. Press **Publish** — live in about 40 seconds
+Open the link **once** on the phone, paste a GitHub token, and then add the page to the
+home screen (iPhone: Share → *Add to Home Screen*; Android: ⋮ → *Install app*). After that
+it opens full screen like a native app, signed in, one tap away.
 
-Visitors never see this. `admin.html` is `noindex`, unlinked, and inert without your token.
+### What it does
 
-### Media
+- **Home** — connection status, counts, quick actions, install button.
+- **Content** — every text field on the site: logo (image *or* letter) and name, contact
+  details, hero copy, About paragraphs and facts, Writing posts, Study entries, hobbies,
+  social links, footer.
+- **Media** — photos (multi-select from the camera roll or the camera, resized to 1600 px
+  WebP on the way up), songs (mp3 and friends, played inline on the site), video clips
+  uploaded or pasted as a YouTube/Vimeo link, and downloadable files (a CV, a PDF).
+- **Settings** — replace the token, default theme, viewer toggle, contact form on/off,
+  editor theme, JSON backup, reload-from-server.
 
-- **Photos** — upload in the editor, compressed to WebP automatically before upload
-- **Video and audio** — link to YouTube/Vimeo or a file hosted elsewhere (Cloudflare R2).
-  GitHub rejects files over 100 MB, and large media bloats the repo permanently.
+Every change is held as a draft until **Publish**, which commits `content.json` (and any
+uploaded file) straight to the repository. GitHub Pages redeploys and the site is live in
+about a minute. Uploads go to `assets/img`, `assets/media` and `assets/files`.
+
+### One-time token setup
+
+The token is the only credential, and it never leaves the phone's `localStorage`.
+
+1. Open **github.com** in the phone browser, signed in as `sarthaknepal547-cloud`.
+2. Avatar → **Settings** → **Developer settings** → **Personal access tokens** →
+   **Fine-grained tokens** → **Generate new token**.
+3. Name `studio`, expiry **1 year**.
+4. Repository access → **Only select repositories** → `sarthakdev`.
+5. Permissions → Repository permissions → **Contents: Read and write**.
+6. Generate, copy the `github_pat_…` value, paste it into Studio.
+
+When it expires, generate a new one and paste it in **Settings → Connection**.
+
+### Limits worth knowing
+
+- Images are converted to WebP (max 1600 px), so a full gallery stays small.
+- Audio/video uploads are capped at **22 MB** each, files at **18 MB** — GitHub refuses
+  files over 100 MB and a repo that never shrinks.
+- Long video belongs on YouTube: paste the link instead of uploading.
+- There is no server, so there is no password login. The token *is* the login, and it is
+  stored only on the device it was pasted into.
 
 ### How it fits together
 
@@ -129,9 +160,12 @@ Visitors never see this. `admin.html` is `noindex`, unlinked, and inert without 
 | --- | --- |
 | `index.html` | The whole site — styling and rendering, no content |
 | `content.json` | All editable content |
-| `admin.html` | Owner editor (token-gated) |
+| `admin.html` | Studio — the owner editor (token-gated, installable) |
+| `admin.webmanifest` | Makes Studio installable on a home screen |
+| `icon-studio.svg` | Home-screen icon for Studio |
+| `assets/media/`, `assets/files/` | Songs, clips and downloads uploaded through Studio |
 | `404.html` | Friendly not-found page |
-| `assets/img/` | Photos uploaded through the editor |
+| `assets/img/` | Photos and the logo, uploaded through Studio |
 
 ## Features
 

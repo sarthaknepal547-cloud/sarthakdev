@@ -22,7 +22,10 @@
         "label": "Facebook",
         "url": "https://www.facebook.com/S4RTH4K"
       }
-    ]
+    ],
+    "logoLetter": "S",
+    "logoUrl": "",
+    "brandName": "Sarthak"
   },
   "hero": {
     "eyebrow": "Bhaktapur · Nepal",
@@ -176,5 +179,6 @@
       "label": "instagram",
       "url": "https://www.instagram.com/_elytraa/"
     }
-  ]
+  ],
+  "files": []
 }
