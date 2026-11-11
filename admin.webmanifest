@@ -1,0 +1,46 @@
+{
+  "name": "Studio — Sarthak Dev Nepal",
+  "short_name": "Studio",
+  "description": "Private editor for sarthakdev.com.np — photos, songs, posts and text, straight from your phone.",
+  "start_url": "/admin.html",
+  "scope": "/",
+  "id": "/admin.html",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0B0A0E",
+  "theme_color": "#0B0A0E",
+  "icons": [
+    {
+      "src": "icon-studio.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-studio.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Add photos",
+      "short_name": "Photos",
+      "url": "/admin.html#photos",
+      "description": "Upload photos to the gallery"
+    },
+    {
+      "name": "New post",
+      "short_name": "Post",
+      "url": "/admin.html#posts",
+      "description": "Write a new article"
+    },
+    {
+      "name": "Add a song",
+      "short_name": "Music",
+      "url": "/admin.html#motion",
+      "description": "Upload an audio track"
+    }
+  ]
+}
