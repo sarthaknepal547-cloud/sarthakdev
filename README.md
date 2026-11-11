@@ -132,3 +132,29 @@ Visitors never see this. `admin.html` is `noindex`, unlinked, and inert without 
 | `admin.html` | Owner editor (token-gated) |
 | `404.html` | Friendly not-found page |
 | `assets/img/` | Photos uploaded through the editor |
+
+## Features
+
+Beyond the six rooms, the site ships with:
+
+- **Ambient music** — generated live with the Web Audio API (a soft pad plus
+  random pentatonic bells). No audio files, nothing to host.
+- **Command palette** — `⌘K` / `Ctrl+K` to search posts, jump to rooms, switch
+  theme, change accent colour, toggle data saver, take a photo.
+- **Visitors choose their accent** — six colours, remembered per browser.
+- **Camera** — take a photo in the Photos room with five filters, then download,
+  share, or keep it in a local strip.
+- **Read time + reading progress bar** on every post.
+- **Share** any room via the native share sheet, or copy the link.
+- **Save contact** — downloads a `.vcf` card.
+- **Data saver** — disables particles, spotlight and blur for slow connections.
+- **Installable** — web app manifest plus a service worker, so it opens offline
+  and can be added to a home screen.
+- **Keyboard** — `1`–`6` open rooms, `Esc` steps back, `⌘K` opens search.
+
+### The one thing that needs a server
+
+Visitor photos are **not** published to the site. A static GitHub Pages site has
+nowhere to store an upload, so snapshots stay in the visitor's own browser.
+Making them public needs object storage and an upload endpoint (Cloudflare R2
+plus a small Worker, both on the free tier) — that's a separate piece of work.
