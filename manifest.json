@@ -9,7 +9,37 @@
   "background_color": "#07060A",
   "theme_color": "#07060A",
   "icons": [
-    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
-    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Photos",
+      "short_name": "Photos",
+      "url": "/#/photos",
+      "description": "See the gallery"
+    },
+    {
+      "name": "Writing",
+      "short_name": "Writing",
+      "url": "/#/writing",
+      "description": "Read the blog"
+    },
+    {
+      "name": "Contact",
+      "short_name": "Contact",
+      "url": "/#/contact",
+      "description": "Get in touch"
+    }
   ]
 }

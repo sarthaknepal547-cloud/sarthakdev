@@ -33,7 +33,7 @@ spatial views:
 - **CSS3** — custom properties (theme colors), flexbox/grid, responsive media queries
 - **Vanilla JavaScript** — mobile menu, smooth scrolling, scroll animations, image modal, form handling
 - **Font Awesome 6.4** — icons, via CDN
-- **Placeholder images** — [picsum.photos](https://picsum.photos) (stand-ins for my own photos)
+- **No stock photography** — every photo on the site is my own upload.
 
 No installation, no build tools, no package manager required.
 
@@ -144,13 +144,32 @@ Beyond the six rooms, the site ships with:
 - **Visitors choose their accent** — six colours, remembered per browser.
 - **Camera** — take a photo in the Photos room with five filters, then download,
   share, or keep it in a local strip.
+- **Three soundscapes** — Bells, Night and Rain, all synthesised in the browser
+  (the rain is filtered noise). Pick one from the command palette.
 - **Read time + reading progress bar** on every post.
+- **Post to post navigation** — Previous / Next buttons at the end of an article,
+  with a `3 / 7` counter, so you never have to close and reopen.
+- **Reading list** — tap the star on any post to pin it; saved posts appear as
+  chips at the top of the Writing room and are remembered per browser.
+- **Photo lightbox extras** — image counter, download button, tap to zoom, and
+  swipe left/right on a phone.
 - **Share** any room via the native share sheet, or copy the link.
 - **Save contact** — downloads a `.vcf` card.
+- **Surprise me** — jump to a random room from the palette.
+- **Follow the system theme** — one palette action tracks `prefers-color-scheme`.
 - **Data saver** — disables particles, spotlight and blur for slow connections.
 - **Installable** — web app manifest plus a service worker, so it opens offline
-  and can be added to a home screen.
-- **Keyboard** — `1`–`6` open rooms, `Esc` steps back, `⌘K` opens search.
+  and can be added to a home screen, with long-press shortcuts to Photos,
+  Writing and Contact.
+- **Keyboard** — `1`–`6` open rooms, `M` music, `T` theme, `?` shortcut sheet,
+  `Esc` steps back, `⌘K` opens search.
+
+### Navigation that respects the back button
+
+Every full-screen view — a room, an article, a photo, the camera — pushes one
+history entry. On a phone, the back gesture closes that view and returns you to
+exactly where you were (article → room → hub) instead of leaving the site, and
+the address bar keeps up (`#/writing`) so links stay shareable.
 
 ### The one thing that needs a server
 
